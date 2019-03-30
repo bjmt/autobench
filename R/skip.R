@@ -7,7 +7,7 @@
 skip <- function() {
 
   missing.settings <- paste0("Could not find benchmark settings, make sure to",
-                             " call autobench::setup() first")
+                             " call autobench::begin() first")
   skip <- tryCatch(get(".autobench_skip", envir = baseenv()),
                    error = function(e) stop(missing.settings))
 

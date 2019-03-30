@@ -13,7 +13,7 @@ run <- function(name = NULL, ...) {
 
   ## load autobench::begin() settings
   missing.settings <- paste0("Could not find benchmark settings, make sure to",
-                             " call autobench::setup() first")
+                             " call autobench::begin() first")
   run.settings <- tryCatch(get(".autobench_info", envir = baseenv()),
                            error = function(e) stop(missing.settings))
   run.settings$counter <- run.settings$counter + 1

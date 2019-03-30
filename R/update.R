@@ -13,7 +13,7 @@ update <- function(max.reps = NULL, min.time = NULL, unit = NULL,
                    tool = NULL, stop.on.fail = NULL, permanent = FALSE) {
 
   missing.settings <- paste0("Could not find benchmark settings, make sure to",
-                             " call autobench::setup() first")
+                             " call autobench::begin() first")
 
   updated.settings <- tryCatch(get(".autobench_updated", envir = baseenv()),
                                error = function(e) stop(missing.settings))

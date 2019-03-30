@@ -11,7 +11,7 @@ end <- function() {
   total.toc <- paste("Total runtime:", total.toc, "minutes")
 
   missing.settings <- paste0("Could not find benchmark settings, make sure to",
-                             " call autobench::setup()")
+                             " call autobench::begin()")
   run.settings <- tryCatch(get(".autobench_info", envir = baseenv()),
                            error = function(e) stop(missing.settings))
   v <- !run.settings$quiet
