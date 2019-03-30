@@ -281,6 +281,13 @@ parse_rbenchmark <- function(res, unit) {
   bench <- res$b[, b.cols]
   m <- res$m
 
+  bench$elapsed <- fix_unit(bench$elapsed, unit)
+  if (unit == "ns") unit <- "nanoseconds"
+  else if (unit == "us") unit <- "microseconds"
+  else if (unit == "ms") unit <- "milliseconds"
+  else if (unit == "s") unit <- "seconds"
+  else if (unit == "min") unit <- "minutes"
+
   bench$per.rep <- bench$elapsed / bench$replications
   bench$mem <- m
   bench$mem <- vapply(m, utils:::format.object_size, character(1))
@@ -290,8 +297,18 @@ parse_rbenchmark <- function(res, unit) {
   bench <- as.character(bench)
 
   # need to add unit conversion
-  c("Units: seconds", bench)
+  c(paste("Units:", unit), bench)
 
+}
+
+fix_unit <- function(elapsed, unit) {
+  switch(unit,
+    "ns" = elapsed * 1e9,
+    "us" = elapsed * 1e6,
+    "ms" = elapsed * 1e3,
+    "s" = elapsed,
+    "min" = elapsed / 60,
+  )
 }
 
 write_bench <- function(out, exprs.parsed, file, name, counter, new.settings,

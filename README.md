@@ -23,6 +23,11 @@ autobench::run("Different tool",
                e1 = runif(100000, 0, 10),
                e2 = rnorm(100000, 5, 2.5))
 
+autobench::update(tool = "rbenchmark", unit = "ms")
+autobench::run("Different tool 2",
+               e1 = runif(100000, 0, 10),
+               e2 = rnorm(100000, 5, 2.5))
+
 autobench::skip()
 autobench::run("Skipped tests",
                e1 = sample(1:1000, 1000))
@@ -39,17 +44,18 @@ autobench::end()
 Starting benchmarks
 * Running benchmark 1: Tests [0.01 m]
 * Running benchmark 2: Different tool [0.02 m]
-* Running benchmark 3: Skipped tests [SKIPPED]
-* Running benchmark 4: Failing test [ERROR]
+* Running benchmark 3: Different tool 2 [0.03 m]
+* Running benchmark 4: Skipped tests [SKIPPED]
+* Running benchmark 6: Failing test [ERROR]
 All benchmarks completed.
-Total runtime: 0.04 minutes
+Total runtime: 0.07 minutes
 ```
 
 ### Text results
 
 ```
 autobench v0.0.1
-2019-03-29 20:38:19
+2019-03-29 23:35:28
 
 Initial benchmark settings
   * max.reps: 100
@@ -67,14 +73,14 @@ e2 = rnorm(1e+05, 5, 2.5)
 Absolute:
 expression     min    mean  median     max  itr/sec  mem_alloc  n_gc  n_itr  total_time
 ----------  ------  ------  ------  ------  -------  ---------  ----  -----  ----------
-e1          3.08ms  3.49ms  3.42ms  5.37ms    286.4      784KB     0    100       349ms
-e2          7.77ms  7.84ms  7.83ms  8.34ms    127.5      784KB     0     64       502ms
+e1          2.77ms  3.26ms  3.28ms  3.62ms    306.4      784KB     0    100       326ms
+e2          7.79ms  7.91ms  7.88ms   8.3ms    126.4      784KB     0     64       506ms
 
 Relative:
 expression    min   mean  median    max  mem_alloc  total_time
 ----------  -----  -----  ------  -----  ---------  ----------
 e1          1.000  1.000   1.000  1.000          1       1.000
-e2          2.519  2.246   2.288  1.555          1       1.437
+e2          2.814  2.424   2.407  2.293          1       1.552
 
 Benchmark runtime: 0.01 minutes
 
@@ -87,26 +93,43 @@ e1 = runif(1e+05, 0, 10)
 e2 = rnorm(1e+05, 5, 2.5)
 
 Units: milliseconds
-expr    min   mean  median    max  neval  cld           mem
-----  -----  -----  ------  -----  -----  ---  ------------
-e1    2.814  3.308   3.294  4.083    100    a  802600 bytes
-e2    7.305  7.859   7.821  9.637    100    b  802600 bytes
+expr    min   mean  median     max  neval  cld           mem
+----  -----  -----  ------  ------  -----  ---  ------------
+e1    2.760  3.341   3.298   4.768    100    a  802600 bytes
+e2    7.332  8.128   7.831  24.302    100    b  802600 bytes
 
 Units: relative
-expr    min   mean  median   max  neval  cld  mem
-----  -----  -----  ------  ----  -----  ---  ---
-e1    1.000  1.000   1.000  1.00    100    a    1
-e2    2.596  2.376   2.374  2.36    100    b    1
+expr    min   mean  median    max  neval  cld  mem
+----  -----  -----  ------  -----  -----  ---  ---
+e1    1.000  1.000   1.000  1.000    100    a    1
+e2    2.656  2.433   2.374  5.097    100    b    1
 
 Benchmark runtime: 0.02 minutes
 
->>> Benchmark 3: Skipped tests [SKIPPED]
+>>> Benchmark 3: Different tool 2
 
->>> Benchmark 4: Failing test [ERROR]
+Updated benchmark settings
+  * unit: ms
+  * tool: rbenchmark
+
+e1 = runif(1e+05, 0, 10)
+e2 = rnorm(1e+05, 5, 2.5)
+
+Units: milliseconds
+test  elapsed  relative  replications  per.rep           mem  rel.mem
+----  -------  --------  ------------  -------  ------------  -------
+e1        327     1.000           100     3.27  802600 bytes        1
+e2        789     2.413           100     7.89  802600 bytes        1
+
+Benchmark runtime: 0.03 minutes
+
+>>> Benchmark 4: Skipped tests [SKIPPED]
+
+>>> Benchmark 5: Failing test [ERROR]
 
 >>> All benchmarks complete.
 
-Total runtime: 0.04 minutes
+Total runtime: 0.07 minutes
 
 ─ Session info ───────────────────────────────────────────────────────────────────────────────────
  setting  value                       
@@ -123,18 +146,27 @@ Total runtime: 0.04 minutes
 ─ Packages ───────────────────────────────────────────────────────────────────────────────────────
  ! package        * version    date       lib source                            
    assertthat       0.2.1      2019-03-21 [1] CRAN (R 3.5.3)                    
- R autobench      * 0.0.1      <NA>       [?] <NA>                              
+ P autobench      * 0.0.1      2019-03-30 [?] Github (bjmt/autobench@823d7d5)   
    backports        1.1.3      2018-12-14 [1] CRAN (R 3.5.0)                    
    bench            1.0.1      2018-06-06 [1] CRAN (R 3.5.0)                    
+   bit              1.1-14     2018-05-29 [1] CRAN (R 3.5.0)                    
+   bit64            0.9-7      2017-05-08 [1] CRAN (R 3.5.0)                    
+   blob             1.1.1      2018-03-25 [1] CRAN (R 3.5.0)                    
    broom            0.5.1      2018-12-05 [1] CRAN (R 3.5.0)                    
    callr            3.2.0      2019-03-15 [1] CRAN (R 3.5.2)                    
    cellranger       1.1.0      2016-07-27 [1] CRAN (R 3.5.0)                    
    cli              1.1.0      2019-03-19 [1] CRAN (R 3.5.2)                    
+   clisymbols       1.2.0      2017-05-21 [1] CRAN (R 3.5.0)                    
    codetools        0.2-16     2018-12-24 [2] CRAN (R 3.5.3)                    
    colorout       * 1.2-0      2019-02-12 [1] Github (jalvesaq/colorout@cc5fbfa)
    colorspace       1.4-1      2019-03-18 [1] CRAN (R 3.5.2)                    
    commonmark       1.7        2018-12-01 [1] CRAN (R 3.5.0)                    
+   crancache        0.0.0.9000 2019-02-09 [1] Github (r-lib/crancache@6a288af)  
+   cranlike         1.0.2      2018-11-26 [1] CRAN (R 3.5.0)                    
    crayon           1.3.4      2017-09-16 [1] CRAN (R 3.5.0)                    
+   curl             3.3        2019-01-10 [1] CRAN (R 3.5.2)                    
+   DBI              1.0.0      2018-05-02 [1] CRAN (R 3.5.0)                    
+   debugme          1.1.0      2017-10-22 [1] CRAN (R 3.5.0)                    
    desc             1.2.0      2018-05-01 [1] CRAN (R 3.5.0)                    
    devtools       * 2.0.1      2018-10-26 [1] CRAN (R 3.5.2)                    
    digest           0.6.18     2018-10-10 [1] CRAN (R 3.5.0)                    
@@ -144,6 +176,7 @@ Total runtime: 0.04 minutes
    fs               1.2.7      2019-03-19 [1] CRAN (R 3.5.3)                    
    generics         0.0.2      2018-11-29 [1] CRAN (R 3.5.0)                    
    ggplot2        * 3.1.0      2018-10-25 [1] CRAN (R 3.5.0)                    
+   git2r            0.25.2     2019-03-19 [1] CRAN (R 3.5.3)                    
    glue             1.3.1      2019-03-12 [1] CRAN (R 3.5.2)                    
    gtable           0.3.0      2019-03-25 [1] CRAN (R 3.5.3)                    
    haven            2.1.0      2019-02-19 [1] CRAN (R 3.5.2)                    
@@ -167,6 +200,7 @@ Total runtime: 0.04 minutes
  R nlme             3.1-137    <NA>       [2] <NA>                              
    nvimcom        * 0.9-81     2019-03-21 [1] local                             
    pacman         * 0.5.1      2019-03-11 [1] CRAN (R 3.5.2)                    
+   parsedate        1.1.3      2017-03-02 [1] CRAN (R 3.5.0)                    
    pillar           1.3.1      2018-12-15 [1] CRAN (R 3.5.0)                    
    pkgbuild         1.0.3      2019-03-20 [1] CRAN (R 3.5.3)                    
    pkgconfig        2.0.2      2018-08-16 [1] CRAN (R 3.5.0)                    
@@ -179,6 +213,7 @@ Total runtime: 0.04 minutes
    ps               1.3.0      2018-12-21 [1] CRAN (R 3.5.0)                    
    purrr          * 0.3.2      2019-03-15 [1] CRAN (R 3.5.2)                    
    R6               2.4.0      2019-02-14 [1] CRAN (R 3.5.2)                    
+   rappdirs         0.3.1      2016-03-28 [1] CRAN (R 3.5.0)                    
    rbenchmark       1.0.0      2012-08-30 [1] CRAN (R 3.5.0)                    
    rcmdcheck        1.3.2      2018-11-10 [1] CRAN (R 3.5.0)                    
    Rcpp             1.0.1      2019-03-17 [1] CRAN (R 3.5.2)                    
@@ -188,6 +223,7 @@ Total runtime: 0.04 minutes
    rlang            0.3.2      2019-03-21 [1] CRAN (R 3.5.3)                    
    roxygen2         6.1.1      2018-11-07 [1] CRAN (R 3.5.0)                    
    rprojroot        1.3-2      2018-01-03 [1] CRAN (R 3.5.0)                    
+   RSQLite          2.1.1      2018-05-06 [1] CRAN (R 3.5.0)                    
    rstudioapi       0.10       2019-03-19 [1] CRAN (R 3.5.3)                    
    rvest            0.3.2      2016-06-17 [1] CRAN (R 3.5.0)                    
    sandwich         2.5-0      2018-08-17 [1] CRAN (R 3.5.0)                    
@@ -205,6 +241,7 @@ Total runtime: 0.04 minutes
    tidyverse      * 1.2.1      2017-11-14 [1] CRAN (R 3.5.0)                    
    usethis        * 1.4.0.9000 2019-03-22 [1] Github (r-lib/usethis@ef3d8bf)    
    utf8             1.1.4      2018-05-24 [1] CRAN (R 3.5.0)                    
+   whisker          0.3-2      2013-04-28 [1] CRAN (R 3.5.0)                    
    withr            2.1.2      2018-03-15 [1] CRAN (R 3.5.0)                    
    xfun             0.5        2019-02-20 [1] CRAN (R 3.5.2)                    
    xml2             1.2.0      2018-01-24 [1] CRAN (R 3.5.0)                    
@@ -214,5 +251,6 @@ Total runtime: 0.04 minutes
 [1] /Users/Ben/R_lib
 [2] /Library/Frameworks/R.framework/Versions/3.5/Resources/library
 
+ P ── Loaded and on-disk path mismatch.
  R ── Package was removed from disk.
 ```

@@ -17,7 +17,13 @@ exact number of times to run each expression.}
 each expression (unless expression has already been run max.reps times).}
 
 \item{unit}{Only applies if tool = "microbenchmark" or tool = "rbenchmark".
-Units to show in benchmarking results tables.}
+Units to show in benchmarking results tables.
+See \code{\link[microbenchmark:microbenchmark]{microbenchmark::microbenchmark()}} for acceptable units when
+tool = "microbenchmark". When tool = "rbenchmark", acceptable units are
+"ns" (nanoseconds), "us" (microseconds), "ms" (milliseconds),
+"s" (seconds), and "min" (minutes). The default, unit = "t", when
+run with tool = "microbenchmark" will automatically pick a unit; and
+when run with tool = "rbenchmark", seconds are used.}
 
 \item{check}{Make sure all expressions in a run return equal values.}
 

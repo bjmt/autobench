@@ -15,6 +15,12 @@
 #' @param check Make sure all expressions in a run return equal values.
 #' @param unit Only applies if tool = "microbenchmark" or tool = "rbenchmark".
 #'    Units to show in benchmarking results tables.
+#'    See [microbenchmark::microbenchmark()] for acceptable units when
+#'    tool = "microbenchmark". When tool = "rbenchmark", acceptable units are
+#'    "ns" (nanoseconds), "us" (microseconds), "ms" (milliseconds),
+#'    "s" (seconds), and "min" (minutes). The default, unit = "t", when
+#'    run with tool = "microbenchmark" will automatically pick a unit; and
+#'    when run with tool = "rbenchmark", seconds are used.
 #' @param stop.on.fail Whether to give an error if one of the expressions gives
 #'    an error.
 #'
