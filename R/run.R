@@ -217,9 +217,9 @@ get_mem_allocs <- function(e, env = parent.frame()) {
   f <- tempfile()
   on.exit(unlink(f))
 
-  utils::Rprofmem(f, threshold = 1)
+  Rprofmem(f, threshold = 1)
   a <- capture.output(res <- suppressMessages(suppressWarnings(eval(e, env))))
-  utils::Rprofmem(NULL)
+  Rprofmem(NULL)
 
   if (!file.exists(f)) return(0)
 
