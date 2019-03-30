@@ -3,7 +3,8 @@
 #' @param name Name representing this set of benchmarks.
 #' @param ... Named expressions to benchmark.
 #'
-#' @return FALSE if an error occurred (and `stop.on.fail = FALSE`), TRUE otherwise.
+#' @return `FALSE` if an error occurred (and `stop.on.fail = FALSE`), `TRUE` if
+#'    run instance was successful, and `NULL` if skipped.
 #'
 #' @author Benjamin Jean-Marie Tremblay
 #' @export
@@ -36,7 +37,7 @@ run <- function(name = NULL, ...) {
                        ifelse(is.null(name), "", paste0(" ", name)), " [SKIPPED]")
     cat("", skip.msg, sep = "\n", file = run.settings$file, append = TRUE)
     if (v) cat(" [SKIPPED]")
-    return(NULL)
+    return(invisible(NULL))
   }
 
   ## check for autobench::update() settings
