@@ -39,6 +39,9 @@ an error.}
 \item{permanent}{Whether to only change the settings of the next immediate
 set of benchmarks, or all following benchmarks.}
 }
+\value{
+NULL, invisibly.
+}
 \description{
 Change autobench settings during a run.
 }

@@ -43,6 +43,9 @@ when run with tool = "rbenchmark", seconds are used.}
 \item{stop.on.fail}{Whether to give an error if one of the expressions gives
 an error.}
 }
+\value{
+NULL, invisibly.
+}
 \description{
 Initialise an autobench run.
 }

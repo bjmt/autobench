@@ -1,6 +1,6 @@
 #' Skip the next set of benchmarks.
 #'
-#' @return NULL
+#' @return NULL, invisibly.
 #'
 #' @author Benjamin Jean-Marie Tremblay
 #' @export

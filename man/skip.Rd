@@ -6,6 +6,9 @@
 \usage{
 skip()
 }
+\value{
+NULL, invisibly.
+}
 \description{
 Skip the next set of benchmarks.
 }

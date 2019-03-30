@@ -217,7 +217,7 @@ get_mem_allocs <- function(e, env = parent.frame()) {
 
 parse_bench <- function(res) {
 
-  bench <- res$b[, 1:10]
+  bench <- res$b[, seq_len(10)]
 
   bench.rel <- bench
   min.i <- which.min(bench$median)
@@ -234,7 +234,7 @@ parse_bench <- function(res) {
   bench <- kable(bench, "pandoc", padding = 0)
   bench <- as.character(bench)
 
-  bench.rel <- bench.rel[, c(1:5, 7, 10)]
+  bench.rel <- bench.rel[, c(seq_len(5), 7, 10)]
   bench.rel <- kable(bench.rel, "pandoc", padding = 0)
   bench.rel <- as.character(bench.rel)
 

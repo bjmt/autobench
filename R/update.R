@@ -3,7 +3,7 @@
 #' @param permanent Whether to only change the settings of the next immediate
 #'    set of benchmarks, or all following benchmarks.
 #'
-#' @return NULL
+#' @return NULL, invisibly.
 #'
 #' @inheritParams begin
 #' @author Benjamin Jean-Marie Tremblay

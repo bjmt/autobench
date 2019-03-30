@@ -25,7 +25,7 @@
 #' @param stop.on.fail Whether to give an error if one of the expressions gives
 #'    an error.
 #'
-#' @return NULL
+#' @return NULL, invisibly.
 #'
 #' @author Benjamin Jean-Marie Tremblay
 #' @export
