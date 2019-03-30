@@ -186,8 +186,6 @@ run_bench <- function(exprs, max_iterations, min_time, check, min_iterations) {
     stop("Please install the bench package for tool = \"bench\"")
 }
 
-# NOTE: for some reason benchmarking cat("asdf\n") will cause one instance of
-#'      it to print to terminal for microbenchmark/rbenchmark
 run_microbenchmark <- function(exprs, times, check) {
   if (isFALSE(check)) check <- NULL
   if (requireNamespace("microbenchmark", quietly = TRUE)) {
