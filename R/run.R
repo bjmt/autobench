@@ -186,6 +186,8 @@ run_bench <- function(exprs, max_iterations, min_time, check, min_iterations) {
     stop("Please install the bench package for tool = \"bench\"")
 }
 
+# NOTE: for some reason benchmarking cat("asdf\n") will cause one instance of
+#'      it to print to terminal for microbenchmark/rbenchmark
 run_microbenchmark <- function(exprs, times, check) {
   if (isFALSE(check)) check <- NULL
   if (requireNamespace("microbenchmark", quietly = TRUE)) {
@@ -216,7 +218,7 @@ get_mem_allocs <- function(e, env = parent.frame()) {
   on.exit(unlink(f))
 
   utils::Rprofmem(f, threshold = 1)
-  res <- eval(e, env)
+  a <- capture.output(res <- suppressMessages(suppressWarnings(eval(e, env))))
   utils::Rprofmem(NULL)
 
   if (!file.exists(f)) return(0)
