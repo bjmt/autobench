@@ -253,7 +253,7 @@ parse_microbenchmark <- function(res, unit) {
   df_abs <- summary(bench, unit = unit)
   df_rel <- summary(bench, unit = "relative")
   abs_unit <- attributes(df_abs)$unit
-  df_abs$mem <- vapply(m, utils:::format.object_size, character(1))
+  df_abs$mem <- vapply(m, utils:::format.object_size, unit = "auto", character(1))
   df_rel$mem <- m / m[which.min(df_rel$median)]
 
   if (nrow(df_abs) == 1) do.rel <- FALSE else do.rel <- TRUE
@@ -290,7 +290,7 @@ parse_rbenchmark <- function(res, unit) {
 
   bench$per.rep <- bench$elapsed / bench$replications
   bench$mem <- m
-  bench$mem <- vapply(m, utils:::format.object_size, character(1))
+  bench$mem <- vapply(m, utils:::format.object_size, unit = "auto", character(1))
   bench$rel.mem <- m / m[which.min(bench$elapsed)]
 
   bench <- kable(bench, "pandoc", padding = 0, align = c("l", rep("r", 6)))
