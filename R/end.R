@@ -19,12 +19,16 @@ end <- function() {
     cat("\nAll benchmarks completed.", total.toc, sep = "\n")
   }
 
-  old.width <- getOption("width")
-  options(width = 100)
-  sess.info <- as.character(session_info())
-  options(width = old.width)
+  if (run.settings$session.info) {
+    old.width <- getOption("width")
+    options(width = 100)
+    sess.info <- c("", as.character(session_info()))
+    options(width = old.width)
+  } else {
+    sess.info <- ""
+  }
 
-  cat("", ">>> All benchmarks complete.", "", total.toc, "",
+  cat("", ">>> All benchmarks complete.", "", total.toc,
       sess.info, sep = "\n", file = run.settings$file, append = TRUE)
 
   invisible(TRUE)

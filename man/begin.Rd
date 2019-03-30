@@ -4,44 +4,50 @@
 \alias{begin}
 \title{Initialise an autobench run.}
 \usage{
-begin(file, name, quiet = FALSE, tool = "rbenchmark", min.reps = 1,
-  max.reps = 100, min.time = 0.5, check = FALSE, unit = "t",
-  stop.on.fail = FALSE)
+begin(file = stdout(), name = NULL, quiet = ifelse(isatty(file),
+  TRUE, FALSE), tool = "rbenchmark", min.reps = 1, max.reps = 100,
+  min.time = 0.5, check = FALSE, unit = "t", stop.on.fail = FALSE,
+  session.info = ifelse(isatty(file), FALSE, TRUE))
 }
 \arguments{
-\item{file}{Results file. To print the results to the terminal,
-set file = stdout() and quiet = TRUE.}
+\item{file}{Print results to this file. The default (\code{file = stdout()})
+prints results to the terminal.}
 
 \item{name}{Name of autobench run.}
 
-\item{quiet}{Suppress run status.}
+\item{quiet}{Suppress run status. By default, is set to \code{TRUE} if \code{file} is a
+terminal connection and \code{FALSE} otherwise.}
 
 \item{tool}{Benchmarking package used by autobench. One of "bench",
 "microbenchmark", and "rbenchmark".}
 
-\item{min.reps}{Only applies if tool = "bench". Minimum number of times to
+\item{min.reps}{Only applies if \code{tool = "bench"}. Minimum number of times to
 run each expression.}
 
-\item{max.reps}{If tool = "bench", the maximum number of times to run each
-expression. If tool = "microbenchmark" or tool = "rbenchmark", the
+\item{max.reps}{If \code{tool = "bench"}, the maximum number of times to run each
+expression. If \code{tool = "microbenchmark"} or \code{tool = "rbenchmark"}, the
 exact number of times to run each expression.}
 
-\item{min.time}{Only applies if tool = "bench". Minimum time in seconds to
-each expression (unless expression has already been run max.reps times).}
+\item{min.time}{Only applies if \code{tool = "bench"}. Minimum time in seconds to
+each expression (unless expression has already been run \code{max.reps} times).}
 
 \item{check}{Make sure all expressions in a run return equal values.}
 
-\item{unit}{Only applies if tool = "microbenchmark" or tool = "rbenchmark".
+\item{unit}{Only applies if \code{tool = "microbenchmark"} or \code{tool = "rbenchmark"}.
 Units to show in benchmarking results tables.
 See \code{\link[microbenchmark:microbenchmark]{microbenchmark::microbenchmark()}} for acceptable units when
-tool = "microbenchmark". When tool = "rbenchmark", acceptable units are
+\code{tool = "microbenchmark"}. When \code{tool = "rbenchmark"}, acceptable units are
 "ns" (nanoseconds), "us" (microseconds), "ms" (milliseconds),
 "s" (seconds), and "min" (minutes). The default, unit = "t", when
-run with tool = "microbenchmark" will automatically pick a unit; and
+run with \code{tool = "microbenchmark"} will automatically pick a unit; and
 when run with tool = "rbenchmark", seconds are used.}
 
 \item{stop.on.fail}{Whether to give an error if one of the expressions gives
-an error.}
+an error, or continue.}
+
+\item{session.info}{Print session info after \code{autobench::end()} is
+called. By default will only be set to \code{TRUE} if \code{file} is not a
+terminal connection.}
 }
 \value{
 NULL, invisibly.

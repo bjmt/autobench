@@ -12,7 +12,7 @@ run(name = NULL, ...)
 \item{...}{Named expressions to benchmark.}
 }
 \value{
-FALSE if an error occurred, TRUE otherwise.
+FALSE if an error occurred (and \code{stop.on.fail = FALSE}), TRUE otherwise.
 }
 \description{
 Run a set of benchmarks.

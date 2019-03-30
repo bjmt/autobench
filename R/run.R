@@ -3,7 +3,7 @@
 #' @param name Name representing this set of benchmarks.
 #' @param ... Named expressions to benchmark.
 #'
-#' @return FALSE if an error occurred, TRUE otherwise.
+#' @return FALSE if an error occurred (and `stop.on.fail = FALSE`), TRUE otherwise.
 #'
 #' @author Benjamin Jean-Marie Tremblay
 #' @export

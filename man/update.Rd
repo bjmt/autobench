@@ -9,32 +9,32 @@ update(max.reps = NULL, min.time = NULL, unit = NULL, check = NULL,
   permanent = FALSE)
 }
 \arguments{
-\item{max.reps}{If tool = "bench", the maximum number of times to run each
-expression. If tool = "microbenchmark" or tool = "rbenchmark", the
+\item{max.reps}{If \code{tool = "bench"}, the maximum number of times to run each
+expression. If \code{tool = "microbenchmark"} or \code{tool = "rbenchmark"}, the
 exact number of times to run each expression.}
 
-\item{min.time}{Only applies if tool = "bench". Minimum time in seconds to
-each expression (unless expression has already been run max.reps times).}
+\item{min.time}{Only applies if \code{tool = "bench"}. Minimum time in seconds to
+each expression (unless expression has already been run \code{max.reps} times).}
 
-\item{unit}{Only applies if tool = "microbenchmark" or tool = "rbenchmark".
+\item{unit}{Only applies if \code{tool = "microbenchmark"} or \code{tool = "rbenchmark"}.
 Units to show in benchmarking results tables.
 See \code{\link[microbenchmark:microbenchmark]{microbenchmark::microbenchmark()}} for acceptable units when
-tool = "microbenchmark". When tool = "rbenchmark", acceptable units are
+\code{tool = "microbenchmark"}. When \code{tool = "rbenchmark"}, acceptable units are
 "ns" (nanoseconds), "us" (microseconds), "ms" (milliseconds),
 "s" (seconds), and "min" (minutes). The default, unit = "t", when
-run with tool = "microbenchmark" will automatically pick a unit; and
+run with \code{tool = "microbenchmark"} will automatically pick a unit; and
 when run with tool = "rbenchmark", seconds are used.}
 
 \item{check}{Make sure all expressions in a run return equal values.}
 
-\item{min.reps}{Only applies if tool = "bench". Minimum number of times to
+\item{min.reps}{Only applies if \code{tool = "bench"}. Minimum number of times to
 run each expression.}
 
 \item{tool}{Benchmarking package used by autobench. One of "bench",
 "microbenchmark", and "rbenchmark".}
 
 \item{stop.on.fail}{Whether to give an error if one of the expressions gives
-an error.}
+an error, or continue.}
 
 \item{permanent}{Whether to only change the settings of the next immediate
 set of benchmarks, or all following benchmarks.}
