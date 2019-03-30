@@ -7,6 +7,6 @@
 #' @importFrom sessioninfo session_info
 #' @importFrom profmem readRprofmem
 #' @importFrom tictoc tic toc
-#' @importFrom utils packageDescription
+#' @importFrom utils packageDescription capture.output
 #' @importFrom methods is
 NULL
