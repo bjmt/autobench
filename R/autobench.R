@@ -8,4 +8,5 @@
 #' @importFrom profmem readRprofmem
 #' @importFrom tictoc tic toc
 #' @importFrom utils packageDescription
+#' @importFrom methods is
 NULL

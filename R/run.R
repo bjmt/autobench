@@ -83,12 +83,12 @@ run <- function(name = NULL, ...) {
                   "bench" = {
                     b <- run_bench(exprs, run.settings$max.reps, run.settings$min.time,
                                    run.settings$check, run.settings$min.reps)
-                    if (isFALSE(b)) b else list(b = b)
+                    if (is(b, "autobench_error")) b else list(b = b)
                   },
                   "microbenchmark" = {
                     b <- run_microbenchmark(exprs, run.settings$max.reps,
                                             run.settings$check)
-                    if (isFALSE(b)) {
+                    if (is(b, "autobench_error")) {
                       b
                     } else {
                       m <- numeric(length(exprs))
@@ -99,7 +99,7 @@ run <- function(name = NULL, ...) {
                   },
                   "rbenchmark" = {
                     b <- run_rbenchmark(exprs, run.settings$max.reps)
-                    if (isFALSE(b)) {
+                    if (is(b, "autobench_error")) {
                       b
                     } else {
                       m <- numeric(length(exprs))
@@ -113,18 +113,22 @@ run <- function(name = NULL, ...) {
   bench.toc <- toc(quiet = TRUE)
 
   ## deal with benchmark output
-  if (isFALSE(res)) {
+  if (is(res, "autobench_error")) {
+    fail.msg <- c(paste0(">>> Benchmark ", run.settings$counter, ":",
+                         ifelse(is.null(name), "", paste0(" ", name)), " [ERROR]"),
+                  "", paste("Error:", as.character(res)))
+    cat("", fail.msg, sep = "\n", file = run.settings$file, append = TRUE)
     if (run.settings$stop.on.fail) {
       if (v) cat(" [ERROR]\n")
+      cat("", "Stopping [stop.on.fail = TRUE]", sep = "\n", file = run.settings$file,
+          append = TRUE)
       stop(paste("Benchmark:",
                  ifelse(is.null(name), run.settings$counter, name),
-                 "failed"))
+                 "failed with the following error: "),
+           as.character(res))
     } else {
       if (v) cat(" [ERROR]")
     }
-    fail.msg <- paste0(">>> Benchmark ", run.settings$counter, ":",
-                       ifelse(is.null(name), "", paste0(" ", name)), " [ERROR]")
-    cat("", fail.msg, sep = "\n", file = run.settings$file, append = TRUE)
     return(invisible(FALSE))
   } else {
     if (v) {
@@ -168,12 +172,13 @@ parse_exprs <- function(exprs) paste(names(exprs), as.character(exprs), sep = " 
 
 run_bench <- function(exprs, max_iterations, min_time, check, min_iterations) {
   if (requireNamespace("bench", quietly = TRUE)) {
-    tryCatch(suppressWarnings(do.call(bench::mark,
+    tryCatch(suppressMessages(suppressWarnings(do.call(bench::mark,
                                       c(exprs, check = check,
                                         max_iterations = max_iterations,
                                         min_time = min_time,
-                                        min_iterations = min_iterations))),
-             error = function(e) FALSE)
+                                        min_iterations = min_iterations)))),
+             error = function(e) structure(conditionMessage(e),
+                                         class = "autobench_error"))
   } else
     stop("Please install the bench package for tool = \"bench\"")
 }
@@ -181,17 +186,19 @@ run_bench <- function(exprs, max_iterations, min_time, check, min_iterations) {
 run_microbenchmark <- function(exprs, times, check) {
   if (isFALSE(check)) check <- NULL
   if (requireNamespace("microbenchmark", quietly = TRUE)) {
-    tryCatch(do.call(microbenchmark::microbenchmark,
-                     c(as.list(exprs), list(times = times), list(check = check))),
-             error = function(e) FALSE)
+    tryCatch(suppressMessages(suppressWarnings(do.call(microbenchmark::microbenchmark,
+                     c(as.list(exprs), list(times = times), list(check = check))))),
+             error = function(e) structure(conditionMessage(e),
+                                         class = "autobench_error"))
   } else
     stop("Please install the microbenchmark package for tool = \"microbenchmark\"")
 }
 
 run_rbenchmark <- function(exprs, replications) {
-  tryCatch(do.call(rbenchmark::benchmark,
-                   c(exprs, replications = replications)),
-           error = function(e) FALSE)
+  tryCatch(suppressMessages(suppressWarnings(do.call(rbenchmark::benchmark,
+                   c(exprs, replications = replications)))),
+           error = function(e) structure(conditionMessage(e),
+                                         class = "autobench_error"))
 }
 
 get_mem_allocs <- function(e, env = parent.frame()) {

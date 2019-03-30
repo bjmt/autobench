@@ -9,7 +9,7 @@ Authors@R:
 Description: Easily execute user-created benchmarks and save results as text.
 License: MIT + file LICENSE
 Encoding: UTF-8
-Imports: knitr, tictoc, sessioninfo, rbenchmark, profmem, utils
+Imports: knitr, tictoc, sessioninfo, rbenchmark, profmem, utils, methods
 Suggests: bench, microbenchmark
 RoxygenNote: 6.1.1
 Roxygen: list(markdown = TRUE)
