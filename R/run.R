@@ -1,0 +1,314 @@
+#' Run a set of benchmarks.
+#'
+#' @param name Name representing this set of benchmarks.
+#' @param ... Named expressions to benchmark.
+#'
+#' @return FALSE if an error occurred, TRUE otherwise.
+#'
+#' @author Benjamin Jean-Marie Tremblay
+#' @export
+run <- function(name = NULL, ...) {
+
+  exprs <- get_exprs(...)
+
+  ## load autobench::begin() settings
+  missing.settings <- paste0("Could not find benchmark settings, make sure to",
+                             " call autobench::setup() first")
+  run.settings <- tryCatch(get(".autobench_info", envir = baseenv()),
+                           error = function(e) stop(missing.settings))
+  run.settings$counter <- run.settings$counter + 1
+  assign(".autobench_info", run.settings, envir = baseenv())
+  v <- !run.settings$quiet
+
+  if (v) {
+    v.r <- paste0("\n* Running benchmark ", run.settings$counter)
+    if (!is.null(name)) v.r <- paste0(v.r, ": ", name)
+    cat(v.r)
+  }
+
+  ## check for autobench::skip()
+  skip <- tryCatch(get(".autobench_skip", envir = baseenv()),
+                   error = function(e) stop(missing.settings))
+  if (skip$skip) {
+    assign(".autobench_skip", list(skip = FALSE), envir = baseenv())
+    skip.msg <- paste0(">>> Benchmark ", run.settings$counter, ":",
+                       ifelse(is.null(name), "", paste0(" ", name)), " [SKIPPED]")
+    cat("", skip.msg, sep = "\n", file = run.settings$file, append = TRUE)
+    if (v) cat(" [SKIPPED]")
+    return(NULL)
+  }
+
+  ## check for autobench::update() settings
+  updated.settings <- tryCatch(get(".autobench_updated", envir = baseenv()),
+                               error = function(e) stop(missing.settings))
+  updated.note <- list(permanent = updated.settings$permanent)
+  if (!is.null(updated.settings$max.reps)) {
+    updated.note <- c(updated.note, list(max.reps = updated.settings$max.reps))
+    run.settings$max.reps <- updated.settings$max.reps
+  }
+  if (!is.null(updated.settings$min.reps)) {
+    updated.note <- c(updated.note, list(min.reps = updated.settings$min.reps))
+    run.settings$min.reps <- updated.settings$min.reps
+  }
+  if (!is.null(updated.settings$min.time)) {
+    updated.note <- c(updated.note, list(min.time = updated.settings$min.time))
+    run.settings$min.time <- updated.settings$min.time
+  }
+  if (!is.null(updated.settings$unit)) {
+    updated.note <- c(updated.note, list(unit = updated.settings$unit))
+    run.settings$unit <- updated.settings$unit
+  }
+  if (!is.null(updated.settings$tool)) {
+    updated.note <- c(updated.note, list(tool = updated.settings$tool))
+    run.settings$tool <- updated.settings$tool
+  }
+  if (!is.null(updated.settings$stop.on.fail)) {
+    updated.note <- c(updated.note, list(stop.on.fail = updated.settings$stop.on.fail))
+    run.settings$stop.on.fail <- updated.settings$stop.on.fail
+  }
+  if (!is.null(updated.settings$check)) {
+    updated.note <- c(updated.note, list(check = updated.settings$check))
+    run.settings$check <- updated.settings$check
+  }
+  if (length(updated.note) > 1) {
+    updated.note <- updated.note[-1]
+    u.n.cat <- paste0(names(updated.note), ":")
+    u.n.cat <- mapply(paste, u.n.cat, updated.note)
+    u.n.cat <- c("Updated benchmark settings", paste0("  * ", u.n.cat))
+  } else u.n.cat <- character(0)
+
+  ## run benchmark
+  tic()
+  res <- switch(run.settings$tool,
+                  "bench" = {
+                    b <- run_bench(exprs, run.settings$max.reps, run.settings$min.time,
+                                   run.settings$check, run.settings$min.reps)
+                    if (isFALSE(b)) b else list(b = b)
+                  },
+                  "microbenchmark" = {
+                    b <- run_microbenchmark(exprs, run.settings$max.reps,
+                                            run.settings$check)
+                    if (isFALSE(b)) {
+                      b
+                    } else {
+                      m <- numeric(length(exprs))
+                      for (i in seq_along(m)) m[i] <- get_mem_allocs(exprs[[i]])
+                      m <- m[seq_along(exprs)]
+                      list(b = b, m = m)
+                    }
+                  },
+                  "rbenchmark" = {
+                    b <- run_rbenchmark(exprs, run.settings$max.reps)
+                    if (isFALSE(b)) {
+                      b
+                    } else {
+                      m <- numeric(length(exprs))
+                      for (i in seq_along(m)) m[i] <- get_mem_allocs(exprs[[i]])
+                      m <- m[seq_along(exprs)]
+                      list(b = b, m = m)
+                    }
+                  },
+                  stop("tool must be one of bench, microbenchmark, rbenchmark")
+                )
+  bench.toc <- toc(quiet = TRUE)
+
+  ## deal with benchmark output
+  if (isFALSE(res)) {
+    if (run.settings$stop.on.fail) {
+      if (v) cat(" [ERROR]\n")
+      stop(paste("Benchmark:",
+                 ifelse(is.null(name), run.settings$counter, name),
+                 "failed"))
+    } else {
+      if (v) cat(" [ERROR]")
+    }
+    fail.msg <- paste0(">>> Benchmark ", run.settings$counter, ":",
+                       ifelse(is.null(name), "", paste0(" ", name)), " [ERROR]")
+    cat("", fail.msg, sep = "\n", file = run.settings$file, append = TRUE)
+    return(invisible(FALSE))
+  } else {
+    if (v) {
+      cat.toc <- round((bench.toc$toc - bench.toc$tic) / 60, 2)
+      cat(" [", cat.toc, " m]", sep = "")
+    }
+    exprs.parsed <- parse_exprs(exprs)
+    out <- switch(run.settings$tool,
+                   "bench" = {
+                     parse_bench(res)
+                   },
+                   "microbenchmark" = {
+                     parse_microbenchmark(res, run.settings$unit)
+                   },
+                   "rbenchmark" = {
+                     parse_rbenchmark(res, run.settings$unit)
+                   }
+                 )
+  }
+
+  ## write to file
+  write_bench(out, exprs.parsed, run.settings$file, name, run.settings$counter,
+              u.n.cat, bench.toc)
+
+  ## change settings if needed
+  if (isFALSE(updated.settings$permanent)) {
+    updated.settings <- list(quiet = NULL, max.reps = NULL, min.time = NULL,
+                             check = NULL,
+                             unit = NULL, stop.on.fail = NULL, permanent = FALSE)
+    assign(".autobench_updated", updated.settings, envir = baseenv())
+  }
+
+  ## exit
+  invisible(TRUE)
+
+}
+
+get_exprs <- function(...) substitute(...())
+
+parse_exprs <- function(exprs) paste(names(exprs), as.character(exprs), sep = " = ")
+
+run_bench <- function(exprs, max_iterations, min_time, check, min_iterations) {
+  if (requireNamespace("bench", quietly = TRUE)) {
+    tryCatch(suppressWarnings(do.call(bench::mark,
+                                      c(exprs, check = check,
+                                        max_iterations = max_iterations,
+                                        min_time = min_time,
+                                        min_iterations = min_iterations))),
+             error = function(e) FALSE)
+  } else
+    stop("Please install the bench package for tool = \"bench\"")
+}
+
+run_microbenchmark <- function(exprs, times, check) {
+  if (isFALSE(check)) check <- NULL
+  if (requireNamespace("microbenchmark", quietly = TRUE)) {
+    tryCatch(do.call(microbenchmark::microbenchmark,
+                     c(as.list(exprs), list(times = times), list(check = check))),
+             error = function(e) FALSE)
+  } else
+    stop("Please install the microbenchmark package for tool = \"microbenchmark\"")
+}
+
+run_rbenchmark <- function(exprs, replications) {
+  tryCatch(do.call(rbenchmark::benchmark,
+                   c(exprs, replications = replications)),
+           error = function(e) FALSE)
+}
+
+get_mem_allocs <- function(e, env = parent.frame()) {
+
+  f <- tempfile()
+  on.exit(unlink(f))
+
+  utils::Rprofmem(f, threshold = 1)
+  res <- eval(e, env)
+  utils::Rprofmem(NULL)
+
+  if (!file.exists(f)) return(0)
+
+  memory <- readRprofmem(f)
+
+  memory <- sum(memory$bytes, na.rm = TRUE)
+
+  if (length(memory) > 1) stop("mem > 1")
+
+  memory
+
+}
+
+parse_bench <- function(res) {
+
+  bench <- res$b[, 1:10]
+
+  bench.rel <- bench
+  min.i <- which.min(bench$median)
+  bench.rel$min <- as.numeric(bench$min) / as.numeric(bench$min[min.i])
+  bench.rel$mean <- as.numeric(bench$mean) / as.numeric(bench$mean[min.i])
+  bench.rel$median <- as.numeric(bench$median) / as.numeric(bench$median[min.i])
+  bench.rel$max <- as.numeric(bench$max) / as.numeric(bench$max[min.i])
+  bench.rel$mem_alloc <- as.numeric(bench$mem_alloc) / as.numeric(bench$mem_alloc[min.i])
+  bench.rel$total_time <- as.numeric(bench$total_time) / as.numeric(bench$total_time[min.i])
+
+  if (nrow(bench) == 1) do.rel <- FALSE else do.rel <- TRUE
+
+  # bench <- bench[, -6]
+  bench <- kable(bench, "pandoc", padding = 0)
+  bench <- as.character(bench)
+
+  bench.rel <- bench.rel[, c(1:5, 7, 10)]
+  bench.rel <- kable(bench.rel, "pandoc", padding = 0)
+  bench.rel <- as.character(bench.rel)
+
+  if (do.rel)
+    c("Absolute:", bench, "", "Relative:", bench.rel)
+  else
+    bench
+
+}
+
+parse_microbenchmark <- function(res, unit) {
+
+  bench <- res$b
+  m <- res$m
+
+  df_abs <- summary(bench, unit = unit)
+  df_rel <- summary(bench, unit = "relative")
+  abs_unit <- attributes(df_abs)$unit
+  df_abs$mem <- vapply(m, utils:::format.object_size, character(1))
+  df_rel$mem <- m / m[which.min(df_rel$median)]
+
+  if (nrow(df_abs) == 1) do.rel <- FALSE else do.rel <- TRUE
+
+  df_abs <- df_abs[, -c(3, 6)]
+  df_abs <- kable(df_abs, "pandoc", padding = 0,
+                  align = c("l", rep("r", 7), "l", "r"))
+  df_abs <- as.character(df_abs)
+
+  df_rel <- df_rel[, -c(3, 6)]
+  df_rel <- kable(df_rel, "pandoc", padding = 0,
+                  align = c("l", rep("r", 7), "l", "r"))
+  df_rel <- as.character(df_rel)
+
+  if (do.rel)
+    c(paste("Units:", abs_unit), df_abs, "", "Units: relative", df_rel)
+  else
+    c(paste("Units:", abs_unit), df_abs)
+
+}
+
+parse_rbenchmark <- function(res, unit) {
+
+  b.cols <- c("test", "elapsed", "relative", "replications")
+  bench <- res$b[, b.cols]
+  m <- res$m
+
+  bench$per.rep <- bench$elapsed / bench$replications
+  bench$mem <- m
+  bench$mem <- vapply(m, utils:::format.object_size, character(1))
+  bench$rel.mem <- m / m[which.min(bench$elapsed)]
+
+  bench <- kable(bench, "pandoc", padding = 0, align = c("l", rep("r", 6)))
+  bench <- as.character(bench)
+
+  # need to add unit conversion
+  c("Units: seconds", bench)
+
+}
+
+write_bench <- function(out, exprs.parsed, file, name, counter, new.settings,
+                        bench.toc) {
+  if (length(new.settings) > 0) n.s <- c("", new.settings, "")
+  else n.s <- ""
+  bench.toc <- round((bench.toc$toc - bench.toc$tic) / 60, 2)
+  bench.toc <- paste("Benchmark runtime:", bench.toc, "minutes")
+  out <- c(
+     "",
+     paste0(">>> Benchmark ", counter, ": ", ifelse(is.null(name), "", name)),
+     n.s,
+     exprs.parsed,
+     "",
+     out,
+     "",
+     bench.toc
+   )
+  cat(out, sep = "\n", file = file, append = TRUE)
+}

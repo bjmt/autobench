@@ -1,0 +1,15 @@
+Package: autobench
+Title: Automated code benchmarking
+Version: 0.0.1
+Authors@R:
+    person(given = c("Benjamin", "Jean-Marie"),
+           family = "Tremblay",
+           role = c("aut", "cre"),
+           email = "benjmtremblay@gmail.com")
+Description: Easily execute user-created benchmarks and save results as text.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Imports: knitr, tictoc, sessioninfo, rbenchmark, profmem, utils
+Suggests: bench, microbenchmark
+RoxygenNote: 6.1.1
+Roxygen: list(markdown = TRUE)
