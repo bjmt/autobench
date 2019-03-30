@@ -1,6 +1,7 @@
 #' Initialise an autobench run.
 #'
-#' @param file Results file.
+#' @param file Results file. To print the results to the terminal,
+#'    set file = stdout() and quiet = TRUE.
 #' @param name Name of autobench run.
 #' @param quiet Suppress run status.
 #' @param tool Benchmarking package used by autobench. One of "bench",

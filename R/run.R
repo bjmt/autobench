@@ -282,11 +282,13 @@ parse_rbenchmark <- function(res, unit) {
   m <- res$m
 
   bench$elapsed <- fix_unit(bench$elapsed, unit)
-  if (unit == "ns") unit <- "nanoseconds"
-  else if (unit == "us") unit <- "microseconds"
-  else if (unit == "ms") unit <- "milliseconds"
-  else if (unit == "s") unit <- "seconds"
-  else if (unit == "min") unit <- "minutes"
+  unit <- switch(unit,
+                 "ns"  = "nanoseconds",
+                 "us"  = "microseconds",
+                 "ms"  = "milliseconds",
+                 "s"   = "seconds",
+                 "min" = "minutes",
+                         "seconds")
 
   bench$per.rep <- bench$elapsed / bench$replications
   bench$mem <- m
@@ -303,11 +305,12 @@ parse_rbenchmark <- function(res, unit) {
 
 fix_unit <- function(elapsed, unit) {
   switch(unit,
-    "ns" = elapsed * 1e9,
-    "us" = elapsed * 1e6,
-    "ms" = elapsed * 1e3,
-    "s" = elapsed,
+    "ns"  = elapsed * 1e9,
+    "us"  = elapsed * 1e6,
+    "ms"  = elapsed * 1e3,
+    "s"   = elapsed,
     "min" = elapsed / 60,
+            elapsed
   )
 }
 

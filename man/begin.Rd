@@ -9,7 +9,8 @@ begin(file, name, quiet = FALSE, tool = "rbenchmark", min.reps = 1,
   stop.on.fail = FALSE)
 }
 \arguments{
-\item{file}{Results file.}
+\item{file}{Results file. To print the results to the terminal,
+set file = stdout() and quiet = TRUE.}
 
 \item{name}{Name of autobench run.}
 
