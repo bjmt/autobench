@@ -21,7 +21,7 @@ Units to show in benchmarking results tables.
 See \code{\link[microbenchmark:microbenchmark]{microbenchmark::microbenchmark()}} for acceptable units when
 \code{tool = "microbenchmark"}. When \code{tool = "rbenchmark"}, acceptable units are
 "ns" (nanoseconds), "us" (microseconds), "ms" (milliseconds),
-"s" (seconds), and "min" (minutes). The default, unit = "t", when
+"s" (seconds), and "min" (minutes). The default, \code{unit = "t"}, when
 run with \code{tool = "microbenchmark"} will automatically pick a unit; and
 when run with tool = "rbenchmark", seconds are used.}
 
@@ -41,10 +41,10 @@ an error, or continue.}
 set of benchmarks, or all following benchmarks.}
 }
 \value{
-NULL, invisibly.
+\code{NULL}, invisibly.
 }
 \description{
-Change autobench settings during a run.
+Changes the benchmark settings partway through an \pkg{autobench} session.
 }
 \author{
 Benjamin Jean-Marie Tremblay

@@ -7,7 +7,7 @@
 skip()
 }
 \value{
-NULL, invisibly.
+\code{NULL}, invisibly.
 }
 \description{
 Skip the next set of benchmarks.

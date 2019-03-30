@@ -7,10 +7,13 @@
 end()
 }
 \value{
-TRUE
+\code{TRUE}, invisibly.
 }
 \description{
-Terminate an autobench run.
+Calling \code{\link[autobench:end]{autobench::end()}} will terminate an \pkg{autobench} session by
+printing total runtime and session info (if \code{session.info = TRUE}). Note that
+\code{\link[autobench:begin]{autobench::begin()}} must be called again in order to execute further
+benchmarks.
 }
 \author{
 Benjamin Jean-Marie Tremblay

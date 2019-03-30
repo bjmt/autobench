@@ -1,6 +1,11 @@
 #' Terminate an autobench run.
 #'
-#' @return TRUE
+#' Calling [autobench::end()] will terminate an \pkg{autobench} session by
+#' printing total runtime and session info (if `session.info = TRUE`). Note that
+#' [autobench::begin()] must be called again in order to execute further
+#' benchmarks.
+#'
+#' @return `TRUE`, invisibly.
 #'
 #' @author Benjamin Jean-Marie Tremblay
 #' @export
