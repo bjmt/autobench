@@ -49,7 +49,7 @@ begin <- function(file = stdout(), name = NULL,
                              max.reps = max.reps, unit = unit,
                              check = check, tool = tool, min.reps = min.reps,
                              stop.on.fail = stop.on.fail, min.time = min.time,
-                             session.info = session.info)
+                             session.info = session.info, invalid = FALSE)
 
   assign(".autobench_info", autobench.settings, envir = baseenv())
 

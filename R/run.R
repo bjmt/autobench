@@ -16,6 +16,7 @@ run <- function(name = NULL, ...) {
                              " call autobench::begin() first")
   run.settings <- tryCatch(get(".autobench_info", envir = baseenv()),
                            error = function(e) stop(missing.settings))
+  if (run.settings$invalid) stop(missing.settings)
   run.settings$counter <- run.settings$counter + 1
   assign(".autobench_info", run.settings, envir = baseenv())
   v <- !run.settings$quiet

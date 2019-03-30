@@ -14,10 +14,14 @@ end <- function() {
                              " call autobench::begin()")
   run.settings <- tryCatch(get(".autobench_info", envir = baseenv()),
                            error = function(e) stop(missing.settings))
+  if (run.settings$invalid) stop(missing.settings)
   v <- !run.settings$quiet
   if (v) {
     cat("\nAll benchmarks completed.", total.toc, sep = "\n")
   }
+
+  run.settings$invalid <- TRUE
+  assign(".autobench_info", run.settings, envir = baseenv())
 
   if (run.settings$session.info) {
     old.width <- getOption("width")
