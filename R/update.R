@@ -12,6 +12,9 @@ update <- function(max.reps = NULL, min.time = NULL, unit = NULL,
                    check = NULL, min.reps = NULL,
                    tool = NULL, stop.on.fail = NULL, permanent = FALSE) {
 
+  if (!is.null(tool))
+    tool <- match.arg(tool, c("bench", "microbenchmark", "rbenchmark"))
+
   missing.settings <- paste0("Could not find benchmark settings, make sure to",
                              " call autobench::begin() first")
   run.settings <- tryCatch(get(".autobench_info", envir = baseenv()),

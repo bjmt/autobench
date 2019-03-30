@@ -44,7 +44,8 @@ begin <- function(file = stdout(), name = NULL,
                   stop.on.fail = FALSE,
                   session.info = ifelse(isatty(file), FALSE, TRUE)) {
 
-  # if (isatty(file)) quiet <- TRUE
+  tool <- match.arg(tool, c("bench", "microbenchmark", "rbenchmark"))
+
   autobench.settings <- list(file = file, quiet = quiet, counter = 0,
                              max.reps = max.reps, unit = unit,
                              check = check, tool = tool, min.reps = min.reps,
