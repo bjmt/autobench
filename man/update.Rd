@@ -25,7 +25,8 @@ See \code{\link[microbenchmark:microbenchmark]{microbenchmark::microbenchmark()}
 run with \code{tool = "microbenchmark"} will automatically pick a unit; and
 when run with tool = "rbenchmark", seconds are used.}
 
-\item{check}{Make sure all expressions in a run return equal values.}
+\item{check}{Make sure all expressions in a run return equal values. Only
+valid if \code{tool = "bench"} or \code{tool = "microbenchmark"}.}
 
 \item{min.reps}{Only applies if \code{tool = "bench"}. Minimum number of times to
 run each expression.}

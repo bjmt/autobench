@@ -31,7 +31,8 @@ exact number of times to run each expression.}
 \item{min.time}{Only applies if \code{tool = "bench"}. Minimum time in seconds to
 each expression (unless expression has already been run \code{max.reps} times).}
 
-\item{check}{Make sure all expressions in a run return equal values.}
+\item{check}{Make sure all expressions in a run return equal values. Only
+valid if \code{tool = "bench"} or \code{tool = "microbenchmark"}.}
 
 \item{unit}{Only applies if \code{tool = "microbenchmark"} or \code{tool = "rbenchmark"}.
 Units to show in benchmarking results tables.

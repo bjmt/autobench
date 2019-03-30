@@ -14,7 +14,8 @@
 #'    exact number of times to run each expression.
 #' @param min.time Only applies if `tool = "bench"`. Minimum time in seconds to
 #'    each expression (unless expression has already been run `max.reps` times).
-#' @param check Make sure all expressions in a run return equal values.
+#' @param check Make sure all expressions in a run return equal values. Only
+#'    valid if `tool = "bench"` or `tool = "microbenchmark"`.
 #' @param unit Only applies if `tool = "microbenchmark"` or `tool = "rbenchmark"`.
 #'    Units to show in benchmarking results tables.
 #'    See [microbenchmark::microbenchmark()] for acceptable units when
