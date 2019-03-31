@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript --quiet
 
-autobench::begin("example-text.txt", "Example text output",
+autobench::begin("../extdata/example-text.txt", "Example text output",
                  tool = "bench", format = "txt")
 
 autobench::run("Tests",
