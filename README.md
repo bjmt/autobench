@@ -1,5 +1,12 @@
 # autobench
 
+Easily write and run large sets of benchmarks all at once, and collect results
+in one output file. The `autobench` package does not provide any benchmarking
+functionality by itself, instead allowing for use of one of the following
+packages: [bench](https://cran.r-project.org/web/packages/bench/index.html),
+[microbenchmark](https://cran.r-project.org/web/packages/microbenchmark/index.html),
+and [rbenchmark](https://cran.r-project.org/web/packages/rbenchmark/index.html).
+
 ## Installation
 
 ```r

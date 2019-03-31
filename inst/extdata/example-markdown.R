@@ -1,3 +1,5 @@
+#!/usr/bin/env Rscript --quiet
+
 autobench::begin("example-markdown.md", "Example markdown output",
                  tool = "bench", format = "md")
 
