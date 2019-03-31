@@ -49,13 +49,13 @@ autobench::end()
 
 ```
 Starting benchmarks
-* Running benchmark 1: Tests [0.01 m]
-* Running benchmark 2: Different tool [0.03 m]
-* Running benchmark 3: Different tool 2 [0.03 m]
+* Running benchmark 1: Tests [0.9 s]
+* Running benchmark 2: Different tool [1.5 s]
+* Running benchmark 3: Different tool 2 [1.7 s]
 * Running benchmark 4: Skipped tests [SKIPPED]
 * Running benchmark 6: Failing test [ERROR]
 All benchmarks completed.
-Total runtime: 0.07 minutes
+Total runtime: 4.1 seconds
 ```
 
 ### Text results
