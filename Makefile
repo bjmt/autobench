@@ -20,6 +20,7 @@ install:
 	R CMD INSTALL $(PKGNAME)_$(PKGVER).tar.gz
 
 clean:
+	mkdir -p builds;\
 	cd ..;\
 	$(RM) -r $(PKGNAME).Rcheck;\
 	mv -f $(PKGNAME)_$(PKGVER).tar.gz -t $(PKGNAME)/builds
