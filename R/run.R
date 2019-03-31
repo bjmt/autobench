@@ -134,7 +134,9 @@ run <- function(name = NULL, ...) {
     cat("", fail.msg, sep = "\n", file = run.settings$file, append = TRUE)
     if (run.settings$stop.on.fail) {
       if (v) cat(" [ERROR]\n")
-      cat("", "Stopping [stop.on.fail = TRUE]", sep = "\n", file = run.settings$file,
+      stop.msg <- ifelse(out.format == "md", "## Stopping [stop.on.fail = TRUE]",
+                         "Stopping [stop.on.fail = TRUE]")
+      cat("", stop.msg, sep = "\n", file = run.settings$file,
           append = TRUE)
       stop(paste("Benchmark:",
                  ifelse(is.null(name), run.settings$counter, name),
