@@ -1,5 +1,5 @@
-autobench::begin("example-text.txt", "Example text output", tool = "bench",
-                 format = "txt")
+autobench::begin("example-text.txt", "Example text output",
+                 tool = "bench", format = "txt")
 
 autobench::run("Tests",
                e1 = runif(100000, 0, 10),

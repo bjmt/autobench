@@ -49,6 +49,7 @@ begin <- function(file = stdout(), name = NULL,
                   session.info = ifelse(isatty(file), FALSE, TRUE)) {
 
   tool <- match.arg(tool, c("bench", "microbenchmark", "rbenchmark"))
+  format <- match.arg(format, c("txt", "md"))
 
   autobench.settings <- list(file = file, quiet = quiet, counter = 0,
                              max.reps = max.reps, unit = unit, format = format,

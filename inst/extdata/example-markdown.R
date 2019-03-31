@@ -1,5 +1,5 @@
-autobench::begin("example-markdown.md", "Example markdown output", tool = "bench",
-                 format = "md")
+autobench::begin("example-markdown.md", "Example markdown output",
+                 tool = "bench", format = "md")
 
 autobench::run("Tests",
                e1 = runif(100000, 0, 10),
