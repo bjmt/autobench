@@ -148,8 +148,14 @@ run <- function(name = NULL, ...) {
     return(invisible(FALSE))
   } else {
     if (v) {
-      cat.toc <- round((bench.toc$toc - bench.toc$tic) / 60, 2)
-      cat(" [", cat.toc, " m]", sep = "")
+      cat.toc <- bench.toc$toc - bench.toc$tic
+      if (cat.toc > 60) {
+        cat.toc <- round(cat.toc / 60, 2)
+        cat.toc <- paste0(" [", cat.toc, " m]")
+      } else {
+        cat.toc <- paste0(" [", round(cat.toc, 1), " s]")
+      }
+      cat(cat.toc)
     }
     exprs.parsed <- parse_exprs(exprs)
     out <- switch(run.settings$tool,
@@ -388,8 +394,14 @@ write_bench <- function(out, exprs.parsed, file, name, counter, new.settings,
                         bench.toc, out.format) {
   if (length(new.settings) > 0) n.s <- c("", new.settings, "")
   else n.s <- ""
-  bench.toc <- round((bench.toc$toc - bench.toc$tic) / 60, 2)
-  bench.toc <- paste("Benchmark runtime:", bench.toc, "minutes")
+  cat.toc <- bench.toc$toc - bench.toc$tic
+  if (cat.toc > 60) {
+    cat.toc <- round(cat.toc / 60, 2)
+    cat.toc <- paste0(cat.toc, " minutes")
+  } else {
+    cat.toc <- paste0(round(cat.toc, 1), " seconds")
+  }
+  bench.toc <- paste("Benchmark runtime:", cat.toc)
   if (out.format == "md")  exprs.parsed <- c("```r", exprs.parsed, "```")
   out <- c(
      "",

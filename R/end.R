@@ -12,8 +12,14 @@
 end <- function() {
 
   total.toc <- toc(quiet = TRUE)
-  total.toc <- round((total.toc$toc - total.toc$tic) / 60, 2)
-  total.toc <- paste("Total runtime:", total.toc, "minutes")
+  cat.toc <- total.toc$toc - total.toc$tic
+  if (cat.toc > 60) {
+    cat.toc <- round(cat.toc / 60, 2)
+    cat.toc <- paste0(cat.toc, " minutes")
+  } else {
+    cat.toc <- paste0(round(cat.toc, 1), " seconds")
+  }
+  total.toc <- paste("Total runtime:", cat.toc)
 
   missing.settings <- paste0("Could not find benchmark settings, make sure to",
                              " call autobench::begin()")
