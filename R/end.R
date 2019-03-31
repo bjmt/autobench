@@ -21,7 +21,7 @@ end <- function() {
                            error = function(e) stop(missing.settings))
   if (run.settings$invalid) stop(missing.settings)
   v <- !run.settings$quiet
-  format <- run.settings$format
+  out.format <- run.settings$format
   if (v) {
     cat("\nAll benchmarks completed.", total.toc, sep = "\n")
   }
@@ -34,15 +34,18 @@ end <- function() {
     options(width = 100)
     sess.info <- c("", as.character(session_info()))
     options(width = old.width)
-    if (format == "md") sess.info <- c("", "```", sess.info[-1], "```")
+    if (out.format == "md") sess.info <- c("", "```", sess.info[-1], "```")
   } else {
     sess.info <- ""
   }
 
-  if (format == "md") total.toc <- paste0("* ", total.toc)
+  if (out.format == "md") {
+    total.toc <- paste0("* ", total.toc)
+    msg <- "## All benchmarks complete"
+  } else {
+    msg <- ">>> All benchmarks complete."
+  }
 
-  msg <- ifelse(format == "md", "## All benchmarks complete.",
-                ">>> All benchmarks complete.")
   cat("", msg, "", total.toc,
       sess.info, sep = "\n", file = run.settings$file, append = TRUE)
 

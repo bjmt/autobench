@@ -84,11 +84,9 @@ begin <- function(file = stdout(), name = NULL,
       out[2] <- paste0("\n", out[2])
     }
     out <- c(name, out)
-  } else {
-    if (format == "md") {
-      out[1] <- paste("#", out[1])
-      out[2] <- paste0("\n", out[2])
-    }
+  } else if (format == "md") {
+    out[1] <- paste("#", out[1])
+    out[2] <- paste0("\n", out[2])
   }
 
   cat(out, sep = "\n", file = file)
