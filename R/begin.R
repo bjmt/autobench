@@ -79,14 +79,14 @@ begin <- function(file = stdout(), name = NULL,
   if (!is.null(name)) {
     if (format == "md") {
       name <- paste("#", name)
-      # out[1] <- paste("*", out[1])
-      # out[2] <- paste("*", out[2])
+      out[1] <- paste0("\n", out[1])
+      out[2] <- paste0("\n", out[2])
     }
     out <- c(name, out)
   } else {
     if (format == "md") {
       out[1] <- paste("#", out[1])
-      # out[2] <- paste("*", out[2])
+      out[2] <- paste0("\n", out[2])
     }
   }
 
