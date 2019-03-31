@@ -16,7 +16,7 @@ autobench v0.0.4
 
 * Benchmark runtime: 0.01 minutes
 
-```
+```r
 e1 = runif(1e+05, 0, 10)
 e2 = rnorm(1e+05, 5, 2.5)
 ```
@@ -40,7 +40,7 @@ e2 = rnorm(1e+05, 5, 2.5)
 ### Updated benchmark settings
   * tool: microbenchmark
 
-```
+```r
 e1 = runif(1e+05, 0, 10)
 e2 = rnorm(1e+05, 5, 2.5)
 ```
@@ -65,7 +65,7 @@ e2 = rnorm(1e+05, 5, 2.5)
   * unit: ms
   * tool: rbenchmark
 
-```
+```r
 e1 = runif(1e+05, 0, 10)
 e2 = rnorm(1e+05, 5, 2.5)
 ```

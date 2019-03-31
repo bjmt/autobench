@@ -369,7 +369,7 @@ write_bench <- function(out, exprs.parsed, file, name, counter, new.settings,
   else n.s <- ""
   bench.toc <- round((bench.toc$toc - bench.toc$tic) / 60, 2)
   bench.toc <- paste("Benchmark runtime:", bench.toc, "minutes")
-  if (out.format == "md")  exprs.parsed <- c("```", exprs.parsed, "```")
+  if (out.format == "md")  exprs.parsed <- c("```r", exprs.parsed, "```")
   out <- c(
      "",
      paste0(ifelse(out.format == "md", "## Benchmark ", ">>> Benchmark "),
