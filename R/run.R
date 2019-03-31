@@ -259,7 +259,13 @@ parse_bench <- function(res, out.format) {
   bench.rel$total_time <- as.numeric(bench$total_time) / as.numeric(bench$total_time[min.i])
 
   if (nrow(bench) == 1) do.rel <- FALSE else do.rel <- TRUE
-  table.format <- ifelse(out.format == "md", "markdown", "pandoc")
+  if (out.format == "md") {
+    table.format <- "markdown"
+    bench$expression <- paste0("`", bench$expression, "`")
+    bench.rel$expression <- paste0("`", bench.rel$expression, "`")
+  } else {
+    table.format <- "pandoc"
+  }
 
   # bench <- bench[, -6]
   bench <- kable(bench, table.format, padding = 0)
@@ -291,7 +297,13 @@ parse_microbenchmark <- function(res, unit, out.format) {
   df_rel$mem <- m / m[which.min(df_rel$median)]
 
   if (nrow(df_abs) == 1) do.rel <- FALSE else do.rel <- TRUE
-  table.format <- ifelse(out.format == "md", "markdown", "pandoc")
+  if (out.format == "md") {
+    table.format <- "markdown"
+    df_abs$expr <- paste0("`", df_abs$expr, "`")
+    df_rel$expr <- paste0("`", df_rel$expr, "`")
+  } else {
+    table.format <- "pandoc"
+  }
 
   df_abs <- df_abs[, -c(3, 6)]
   df_abs <- kable(df_abs, table.format, padding = 0,
@@ -337,7 +349,13 @@ parse_rbenchmark <- function(res, unit, out.format) {
   bench$mem <- vapply(m, auto_mem_unit, character(1))
   bench$rel.mem <- m / m[which.min(bench$elapsed)]
 
-  table.format <- ifelse(out.format == "md", "markdown", "pandoc")
+  if (out.format == "md") {
+    table.format <- "markdown"
+    bench$test <- paste0("`", bench$test, "`")
+  } else {
+    table.format <- "pandoc"
+  }
+
   bench <- kable(bench, table.format, padding = 0, align = c("l", rep("r", 6)))
   bench <- as.character(bench)
 

@@ -54,4 +54,4 @@ Total runtime: 0.07 minutes
 ### Text results
 
 See [example-text.txt](inst/extdata/example-text.txt) for the output file,
-or [example-markdown.md](inst/extdata/example-markdown.md) for the markdown version.
+and [example-markdown.md](inst/extdata/example-markdown.md) for the markdown version.
