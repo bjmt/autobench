@@ -38,7 +38,9 @@ run each expression.}
 an error, or continue.}
 
 \item{permanent}{Whether to only change the settings of the next immediate
-set of benchmarks, or all following benchmarks.}
+set of benchmarks, or all following benchmarks. Note that only one set
+of updated settings are stored, so calling \code{\link[autobench:update]{autobench::update()}} again
+will overwrite these.}
 }
 \value{
 \code{NULL}, invisibly.

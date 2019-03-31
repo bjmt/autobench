@@ -1,14 +1,19 @@
 Package: autobench
 Title: Automated code benchmarking
-Version: 0.0.4
+Version: 1.0.0
 Authors@R:
     person(given = c("Benjamin", "Jean-Marie"),
            family = "Tremblay",
            role = c("aut", "cre"),
            email = "benjmtremblay@gmail.com")
-Description: Easily execute user-created benchmarks and save results as text.
+Description: Easily write and run large sets of benchmarks all at once, and
+  collect results in one output file. The autobench package does not provide
+  any benchmarking functionality by itself, instead allowing for use of one of
+  the following packages: bench, microbenchmark, and rbenchmark.
 License: MIT + file LICENSE
 Encoding: UTF-8
+URL: https://github.com/bjmt/autobench
+BugReports: https://github.com/bjmt/autobench/issues
 Imports: knitr, tictoc, sessioninfo, rbenchmark, profmem, utils, methods
 Suggests: bench, microbenchmark
 RoxygenNote: 6.1.1

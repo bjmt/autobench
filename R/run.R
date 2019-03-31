@@ -239,7 +239,8 @@ get_mem_allocs <- function(e, env = parent.frame()) {
 
   memory <- sum(memory$bytes, na.rm = TRUE)
 
-  if (length(memory) > 1) stop("something went wrong with getting memory allocations")
+  if (length(memory) > 1) stop("something went wrong with getting memory allocations for: ",
+                               as.character(e))
 
   memory
 
