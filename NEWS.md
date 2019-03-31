@@ -1,3 +1,8 @@
+# autobench 1.0.0
+
+* Improved markdown output
+* Expanded description and function documentation
+
 # autobench 0.0.4
 
 * Results can now be output in markdown format
