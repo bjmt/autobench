@@ -30,6 +30,8 @@
 #'    when run with tool = "rbenchmark", seconds are used.
 #' @param stop.on.fail Whether to give an error if one of the expressions gives
 #'    an error, or continue.
+#' @param format Format of output results. One of "txt" (text) and "md" (markdown).
+#'    Defaults to "txt" if `file` is a terminal connection.
 #' @param session.info Print session info after [autobench::end()] is
 #'    called. By default will only be set to `TRUE` if `file` is not a
 #'    terminal connection.
@@ -43,12 +45,13 @@ begin <- function(file = stdout(), name = NULL,
                   tool = "rbenchmark", min.reps = 1, max.reps = 100,
                   min.time = 0.5, check = FALSE, unit = "t",
                   stop.on.fail = FALSE,
+                  format = ifelse(isatty(file), "txt", "md"),
                   session.info = ifelse(isatty(file), FALSE, TRUE)) {
 
   tool <- match.arg(tool, c("bench", "microbenchmark", "rbenchmark"))
 
   autobench.settings <- list(file = file, quiet = quiet, counter = 0,
-                             max.reps = max.reps, unit = unit,
+                             max.reps = max.reps, unit = unit, format = format,
                              check = check, tool = tool, min.reps = min.reps,
                              stop.on.fail = stop.on.fail, min.time = min.time,
                              session.info = session.info, invalid = FALSE)
@@ -65,7 +68,7 @@ begin <- function(file = stdout(), name = NULL,
 
   out <- c(paste0("autobench v", packageDescription("autobench")$Version),
            as.character(Sys.time()), "",
-           "Initial benchmark settings",
+           paste0(ifelse(format == "md", "## ", ""), "Initial benchmark settings"),
            paste("  * tool:", tool),
            paste("  * max.reps:", max.reps),
            paste("  * min.reps:", min.reps),
@@ -73,7 +76,19 @@ begin <- function(file = stdout(), name = NULL,
            paste("  * check:", check),
            paste("  * stop.on.fail:", stop.on.fail))
 
-  if (!is.null(name)) out <- c(name, out)
+  if (!is.null(name)) {
+    if (format == "md") {
+      name <- paste("#", name)
+      # out[1] <- paste("*", out[1])
+      # out[2] <- paste("*", out[2])
+    }
+    out <- c(name, out)
+  } else {
+    if (format == "md") {
+      out[1] <- paste("#", out[1])
+      # out[2] <- paste("*", out[2])
+    }
+  }
 
   cat(out, sep = "\n", file = file)
 

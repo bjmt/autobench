@@ -7,6 +7,7 @@
 begin(file = stdout(), name = NULL, quiet = ifelse(isatty(file),
   TRUE, FALSE), tool = "rbenchmark", min.reps = 1, max.reps = 100,
   min.time = 0.5, check = FALSE, unit = "t", stop.on.fail = FALSE,
+  format = ifelse(isatty(file), "txt", "md"),
   session.info = ifelse(isatty(file), FALSE, TRUE))
 }
 \arguments{
@@ -45,6 +46,9 @@ when run with tool = "rbenchmark", seconds are used.}
 
 \item{stop.on.fail}{Whether to give an error if one of the expressions gives
 an error, or continue.}
+
+\item{format}{Format of output results. One of "txt" (text) and "md" (markdown).
+Defaults to "txt" if \code{file} is a terminal connection.}
 
 \item{session.info}{Print session info after \code{\link[autobench:end]{autobench::end()}} is
 called. By default will only be set to \code{TRUE} if \code{file} is not a

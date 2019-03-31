@@ -27,6 +27,7 @@ run <- function(name = NULL, ...) {
   run.settings$counter <- run.settings$counter + 1
   assign(".autobench_info", run.settings, envir = baseenv())
   v <- !run.settings$quiet
+  out.format <- run.settings$format
 
   if (v) {
     v.r <- paste0("\n* Running benchmark ", run.settings$counter)
@@ -39,7 +40,8 @@ run <- function(name = NULL, ...) {
                    error = function(e) stop(missing.settings))
   if (skip$skip) {
     assign(".autobench_skip", list(skip = FALSE), envir = baseenv())
-    skip.msg <- paste0(">>> Benchmark ", run.settings$counter, ":",
+    skip.msg <- paste0(ifelse(out.format == "md", "## Benchmark ", ">>> Benchmark "),
+                       run.settings$counter, ":",
                        ifelse(is.null(name), "", paste0(" ", name)), " [SKIPPED]")
     cat("", skip.msg, sep = "\n", file = run.settings$file, append = TRUE)
     if (v) cat(" [SKIPPED]")
@@ -82,7 +84,10 @@ run <- function(name = NULL, ...) {
     updated.note <- updated.note[-1]
     u.n.cat <- paste0(names(updated.note), ":")
     u.n.cat <- mapply(paste, u.n.cat, updated.note)
-    u.n.cat <- c("Updated benchmark settings", paste0("  * ", u.n.cat))
+    if (out.format == "md")
+      u.n.cat <- c("### Updated benchmark settings", paste0("  * ", u.n.cat))
+    else
+      u.n.cat <- c("Updated benchmark settings", paste0("  * ", u.n.cat))
   } else u.n.cat <- character(0)
 
   ## run benchmark
@@ -122,7 +127,8 @@ run <- function(name = NULL, ...) {
 
   ## deal with benchmark output
   if (is(res, "autobench_error")) {
-    fail.msg <- c(paste0(">>> Benchmark ", run.settings$counter, ":",
+    fail.msg <- c(paste0(ifelse(out.format == "md", "## Benchmark ", ">>> Benchmark "),
+                         run.settings$counter, ":",
                          ifelse(is.null(name), "", paste0(" ", name)), " [ERROR]"),
                   "", paste("Error:", as.character(res)))
     cat("", fail.msg, sep = "\n", file = run.settings$file, append = TRUE)
@@ -146,20 +152,20 @@ run <- function(name = NULL, ...) {
     exprs.parsed <- parse_exprs(exprs)
     out <- switch(run.settings$tool,
                    "bench" = {
-                     parse_bench(res)
+                     parse_bench(res, out.format)
                    },
                    "microbenchmark" = {
-                     parse_microbenchmark(res, run.settings$unit)
+                     parse_microbenchmark(res, run.settings$unit, out.format)
                    },
                    "rbenchmark" = {
-                     parse_rbenchmark(res, run.settings$unit)
+                     parse_rbenchmark(res, run.settings$unit, out.format)
                    }
                  )
   }
 
   ## write to file
   write_bench(out, exprs.parsed, run.settings$file, name, run.settings$counter,
-              u.n.cat, bench.toc)
+              u.n.cat, bench.toc, out.format)
 
   ## change settings if needed
   if (isFALSE(updated.settings$permanent)) {
@@ -239,7 +245,7 @@ get_mem_allocs <- function(e, env = parent.frame()) {
 
 }
 
-parse_bench <- function(res) {
+parse_bench <- function(res, out.format) {
 
   bench <- res$b[, seq_len(10)]
 
@@ -253,23 +259,27 @@ parse_bench <- function(res) {
   bench.rel$total_time <- as.numeric(bench$total_time) / as.numeric(bench$total_time[min.i])
 
   if (nrow(bench) == 1) do.rel <- FALSE else do.rel <- TRUE
+  table.format <- ifelse(out.format == "md", "markdown", "pandoc")
 
   # bench <- bench[, -6]
-  bench <- kable(bench, "pandoc", padding = 0)
+  bench <- kable(bench, table.format, padding = 0)
   bench <- as.character(bench)
 
   bench.rel <- bench.rel[, c(seq_len(5), 7, 10)]
-  bench.rel <- kable(bench.rel, "pandoc", padding = 0)
+  bench.rel <- kable(bench.rel, table.format, padding = 0)
   bench.rel <- as.character(bench.rel)
 
   if (do.rel)
-    c("Absolute:", bench, "", "Relative:", bench.rel)
+    c(ifelse(out.format == "md", "### Absolute:", "Absolute:"),
+      bench, "",
+      ifelse(out.format == "md", "### Relative:", "Relative:"),
+      bench.rel)
   else
     bench
 
 }
 
-parse_microbenchmark <- function(res, unit) {
+parse_microbenchmark <- function(res, unit, out.format) {
 
   bench <- res$b
   m <- res$m
@@ -281,25 +291,33 @@ parse_microbenchmark <- function(res, unit) {
   df_rel$mem <- m / m[which.min(df_rel$median)]
 
   if (nrow(df_abs) == 1) do.rel <- FALSE else do.rel <- TRUE
+  table.format <- ifelse(out.format == "md", "markdown", "pandoc")
 
   df_abs <- df_abs[, -c(3, 6)]
-  df_abs <- kable(df_abs, "pandoc", padding = 0,
+  df_abs <- kable(df_abs, table.format, padding = 0,
                   align = c("l", rep("r", 7), "l", "r"))
   df_abs <- as.character(df_abs)
 
   df_rel <- df_rel[, -c(3, 6)]
-  df_rel <- kable(df_rel, "pandoc", padding = 0,
+  df_rel <- kable(df_rel, table.format, padding = 0,
                   align = c("l", rep("r", 7), "l", "r"))
   df_rel <- as.character(df_rel)
 
-  if (do.rel)
-    c(paste("Units:", abs_unit), df_abs, "", "Units: relative", df_rel)
-  else
-    c(paste("Units:", abs_unit), df_abs)
+  if (do.rel) {
+    if (out.format == "md") 
+      c(paste("### Units:", abs_unit), df_abs, "", "### Units: relative", df_rel)
+    else
+      c(paste("Units:", abs_unit), df_abs, "", "Units: relative", df_rel)
+  } else {
+    if (out.format == "md")
+      c(paste("### Units:", abs_unit), df_abs)
+    else
+      c(paste("Units:", abs_unit), df_abs)
+  }
 
 }
 
-parse_rbenchmark <- function(res, unit) {
+parse_rbenchmark <- function(res, unit, out.format) {
 
   b.cols <- c("test", "elapsed", "relative", "replications")
   bench <- res$b[, b.cols]
@@ -319,11 +337,13 @@ parse_rbenchmark <- function(res, unit) {
   bench$mem <- vapply(m, auto_mem_unit, character(1))
   bench$rel.mem <- m / m[which.min(bench$elapsed)]
 
-  bench <- kable(bench, "pandoc", padding = 0, align = c("l", rep("r", 6)))
+  table.format <- ifelse(out.format == "md", "markdown", "pandoc")
+  bench <- kable(bench, table.format, padding = 0, align = c("l", rep("r", 6)))
   bench <- as.character(bench)
 
   # need to add unit conversion
-  c(paste("Units:", unit), bench)
+  if (out.format == "md") c(paste("### Units:", unit), bench)
+  else c(paste("Units:", unit), bench)
 
 }
 
@@ -344,20 +364,22 @@ fix_unit <- function(elapsed, unit) {
 }
 
 write_bench <- function(out, exprs.parsed, file, name, counter, new.settings,
-                        bench.toc) {
+                        bench.toc, out.format) {
   if (length(new.settings) > 0) n.s <- c("", new.settings, "")
   else n.s <- ""
   bench.toc <- round((bench.toc$toc - bench.toc$tic) / 60, 2)
   bench.toc <- paste("Benchmark runtime:", bench.toc, "minutes")
+  if (out.format == "md")  exprs.parsed <- c("```", exprs.parsed, "```")
   out <- c(
      "",
-     paste0(">>> Benchmark ", counter, ": ", ifelse(is.null(name), "", name)),
+     paste0(ifelse(out.format == "md", "## Benchmark ", ">>> Benchmark "),
+            counter, ": ", ifelse(is.null(name), "", name)),
+     "",
+     ifelse(out.format == "md", paste0("* ", bench.toc), bench.toc),
      n.s,
      exprs.parsed,
      "",
-     out,
-     "",
-     bench.toc
+     out
    )
   cat(out, sep = "\n", file = file, append = TRUE)
 }
