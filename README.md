@@ -45,7 +45,7 @@ autobench::run("Failing test",
 autobench::end()
 ```
 
-### Command line output
+### Terminal output
 
 ```
 Starting benchmarks
