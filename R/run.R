@@ -149,8 +149,11 @@ run <- function(name = NULL, ...) {
   } else {
     if (v) {
       cat.toc <- bench.toc$toc - bench.toc$tic
-      if (cat.toc > 60) {
-        cat.toc <- round(cat.toc / 60, 2)
+      if (cat.toc > 3600) {
+        cat.toc <- round(cat.toc / 3600, 1)
+        cat.toc <- paste0(cat.toc, " hours")
+      } else if (cat.toc > 60) {
+        cat.toc <- round(cat.toc / 60, 1)
         cat.toc <- paste0(" [", cat.toc, " m]")
       } else {
         cat.toc <- paste0(" [", round(cat.toc, 1), " s]")
@@ -395,8 +398,11 @@ write_bench <- function(out, exprs.parsed, file, name, counter, new.settings,
   if (length(new.settings) > 0) n.s <- c("", new.settings, "")
   else n.s <- ""
   cat.toc <- bench.toc$toc - bench.toc$tic
-  if (cat.toc > 60) {
-    cat.toc <- round(cat.toc / 60, 2)
+  if (cat.toc > 3600) {
+    cat.toc <- round(cat.toc / 3600, 1)
+    cat.toc <- paste0(cat.toc, " hours")
+  } else if (cat.toc > 60) {
+    cat.toc <- round(cat.toc / 60, 1)
     cat.toc <- paste0(cat.toc, " minutes")
   } else {
     cat.toc <- paste0(round(cat.toc, 1), " seconds")

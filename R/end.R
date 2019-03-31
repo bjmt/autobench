@@ -13,8 +13,11 @@ end <- function() {
 
   total.toc <- toc(quiet = TRUE)
   cat.toc <- total.toc$toc - total.toc$tic
-  if (cat.toc > 60) {
-    cat.toc <- round(cat.toc / 60, 2)
+  if (cat.toc > 3600) {
+    cat.toc <- round(cat.toc / 3600, 1)
+    cat.toc <- paste0(cat.toc, " hours")
+  } else if (cat.toc > 60) {
+    cat.toc <- round(cat.toc / 60, 1)
     cat.toc <- paste0(cat.toc, " minutes")
   } else {
     cat.toc <- paste0(round(cat.toc, 1), " seconds")
