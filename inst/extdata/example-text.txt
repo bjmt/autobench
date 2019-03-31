@@ -1,6 +1,6 @@
 Example text output
-autobench v0.0.4
-2019-03-31 13:45:00
+autobench v1.0.0
+2019-03-31 14:08:46
 
 Initial benchmark settings
   * tool: bench
@@ -18,16 +18,16 @@ e1 = runif(1e+05, 0, 10)
 e2 = rnorm(1e+05, 5, 2.5)
 
 Absolute:
-expression     min    mean  median      max  itr/sec  mem_alloc  n_gc  n_itr  total_time
-----------  ------  ------  ------  -------  -------  ---------  ----  -----  ----------
-e1          2.84ms  3.44ms  3.43ms   4.27ms    290.6      786KB     1     99       341ms
-e2          7.32ms  8.11ms  7.95ms  10.21ms    123.2      786KB     0     62       503ms
+expression     min    mean  median     max  itr/sec  mem_alloc  n_gc  n_itr  total_time
+----------  ------  ------  ------  ------  -------  ---------  ----  -----  ----------
+e1          2.76ms  3.22ms  3.23ms   4.2ms    310.5      786KB     1     99       319ms
+e2          7.31ms  7.83ms  7.85ms  8.85ms    127.7      786KB     0     64       501ms
 
 Relative:
-expression    min   mean  median   max  mem_alloc  total_time
-----------  -----  -----  ------  ----  ---------  ----------
-e1          1.000  1.000   1.000  1.00          1       1.000
-e2          2.573  2.358   2.318  2.39          1       1.477
+expression    min   mean  median    max  mem_alloc  total_time
+----------  -----  -----  ------  -----  ---------  ----------
+e1          1.000  1.000   1.000  1.000          1       1.000
+e2          2.652  2.432   2.433  2.108          1       1.572
 
 >>> Benchmark 2: Different tool
 
@@ -40,16 +40,16 @@ e1 = runif(1e+05, 0, 10)
 e2 = rnorm(1e+05, 5, 2.5)
 
 Units: milliseconds
-expr    min   mean  median    max  neval  cld       mem
-----  -----  -----  ------  -----  -----  ---  --------
-e1    2.880  3.611   3.531  9.519    100    a  783.8 Kb
-e2    7.346  8.019   7.953  9.917    100    b  783.8 Kb
+expr    min   mean  median     max  neval  cld       mem
+----  -----  -----  ------  ------  -----  ---  --------
+e1    2.801  3.404   3.343   8.939    100    a  783.8 Kb
+e2    7.324  7.851   7.814  13.614    100    b  783.8 Kb
 
 Units: relative
-expr   min   mean  median    max  neval  cld  mem
-----  ----  -----  ------  -----  -----  ---  ---
-e1    1.00  1.000   1.000  1.000    100    a    1
-e2    2.55  2.221   2.252  1.042    100    b    1
+expr    min   mean  median    max  neval  cld  mem
+----  -----  -----  ------  -----  -----  ---  ---
+e1    1.000  1.000   1.000  1.000    100    a    1
+e2    2.615  2.307   2.338  1.523    100    b    1
 
 >>> Benchmark 3: Different tool 2
 
@@ -65,8 +65,8 @@ e2 = rnorm(1e+05, 5, 2.5)
 Units: milliseconds
 test  elapsed  relative  replications  per.rep       mem  rel.mem
 ----  -------  --------  ------------  -------  --------  -------
-e1        345     1.000           100     3.45  783.8 Kb        1
-e2        788     2.284           100     7.88  783.8 Kb        1
+e1        340     1.000           100     3.40  783.8 Kb        1
+e2        774     2.276           100     7.74  783.8 Kb        1
 
 >>> Benchmark 4: Skipped tests [SKIPPED]
 
@@ -76,7 +76,7 @@ Error: non-numeric argument to binary operator
 
 >>> All benchmarks complete.
 
-Total runtime: 0.08 minutes
+Total runtime: 0.07 minutes
 
 ─ Session info ───────────────────────────────────────────────────────────────────────────────────
  setting  value                       
@@ -93,7 +93,7 @@ Total runtime: 0.08 minutes
 ─ Packages ───────────────────────────────────────────────────────────────────────────────────────
  ! package        * version  date       lib source                         
    assertthat       0.2.1    2019-03-21 [1] CRAN (R 3.5.3)                 
-   autobench        0.0.4    2019-03-31 [1] Github (bjmt/autobench@fad12cb)
+   autobench        1.0.0    2019-03-31 [1] Github (bjmt/autobench@2596beb)
    bench            1.0.1    2018-06-06 [1] CRAN (R 3.5.0)                 
    cli              1.1.0    2019-03-19 [1] CRAN (R 3.5.2)                 
    codetools        0.2-16   2018-12-24 [2] CRAN (R 3.5.3)                 

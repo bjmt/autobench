@@ -1,8 +1,8 @@
 # Example markdown output
 
-autobench v0.0.4
+autobench v1.0.0
 
-2019-03-31 13:44:55
+2019-03-31 14:08:42
 
 ## Initial benchmark settings
   * tool: bench
@@ -24,14 +24,14 @@ e2 = rnorm(1e+05, 5, 2.5)
 ### Absolute:
 |expression|   min|  mean|median|   max|itr/sec|mem_alloc|n_gc|n_itr|total_time|
 |:---------|-----:|-----:|-----:|-----:|------:|--------:|---:|----:|---------:|
-|`e1`      |2.85ms|3.45ms|3.44ms|4.08ms|  290.1|    786KB|   1|   99|     341ms|
-|`e2`      |7.33ms|7.88ms|7.91ms|8.64ms|  127.0|    786KB|   0|   64|     504ms|
+|`e1`      |2.76ms|3.21ms| 3.2ms|3.91ms|  311.9|    786KB|   1|   99|     317ms|
+|`e2`      |7.32ms|7.71ms|7.79ms|8.14ms|  129.8|    786KB|   0|   65|     501ms|
 
 ### Relative:
-|expression|  min| mean|median| max|mem_alloc|total_time|
-|:---------|----:|----:|-----:|---:|--------:|---------:|
-|`e1`      |1.000|1.000| 1.000|1.00|        1|     1.000|
-|`e2`      |2.574|2.285| 2.295|2.12|        1|     1.477|
+|expression|  min| mean|median|  max|mem_alloc|total_time|
+|:---------|----:|----:|-----:|----:|--------:|---------:|
+|`e1`      |1.000|1.000| 1.000|1.000|        1|     1.000|
+|`e2`      |2.654|2.403| 2.433|2.079|        1|     1.578|
 
 ## Benchmark 2: Different tool
 
@@ -48,14 +48,14 @@ e2 = rnorm(1e+05, 5, 2.5)
 ### Units: milliseconds
 |expr|  min| mean|median|  max|neval|cld|     mem|
 |:---|----:|----:|-----:|----:|----:|--:|-------:|
-|`e1`|2.970|3.616| 3.527| 9.82|  100|  a|783.8 Kb|
-|`e2`|7.341|8.148| 7.963|14.12|  100|  b|783.8 Kb|
+|`e1`|2.795|3.411| 3.314|9.926|  100|  a|783.8 Kb|
+|`e2`|7.333|7.820| 7.826|9.338|  100|  b|783.8 Kb|
 
 ### Units: relative
-|expr|  min| mean|median|  max|neval|cld|mem|
-|:---|----:|----:|-----:|----:|----:|--:|--:|
-|`e1`|1.000|1.000| 1.000|1.000|  100|  a|  1|
-|`e2`|2.472|2.253| 2.258|1.438|  100|  b|  1|
+|expr|  min| mean|median|   max|neval|cld|mem|
+|:---|----:|----:|-----:|-----:|----:|--:|--:|
+|`e1`|1.000|1.000| 1.000|1.0000|  100|  a|  1|
+|`e2`|2.623|2.292| 2.361|0.9408|  100|  b|  1|
 
 ## Benchmark 3: Different tool 2
 
@@ -73,8 +73,8 @@ e2 = rnorm(1e+05, 5, 2.5)
 ### Units: milliseconds
 |test|elapsed|relative|replications|per.rep|     mem|rel.mem|
 |:---|------:|-------:|-----------:|------:|-------:|------:|
-|`e1`|    348|   1.000|         100|   3.48|783.8 Kb|      1|
-|`e2`|    860|   2.471|         100|   8.60|783.8 Kb|      1|
+|`e1`|    325|   1.000|         100|   3.25|783.8 Kb|      1|
+|`e2`|    781|   2.403|         100|   7.81|783.8 Kb|      1|
 
 ## Benchmark 4: Skipped tests [SKIPPED]
 
@@ -82,9 +82,9 @@ e2 = rnorm(1e+05, 5, 2.5)
 
 Error: non-numeric argument to binary operator
 
-## All benchmarks complete.
+## All benchmarks complete
 
-* Total runtime: 0.08 minutes
+* Total runtime: 0.07 minutes
 
 ```
 ─ Session info ───────────────────────────────────────────────────────────────────────────────────
@@ -102,7 +102,7 @@ Error: non-numeric argument to binary operator
 ─ Packages ───────────────────────────────────────────────────────────────────────────────────────
  ! package        * version  date       lib source                         
    assertthat       0.2.1    2019-03-21 [1] CRAN (R 3.5.3)                 
-   autobench        0.0.4    2019-03-31 [1] Github (bjmt/autobench@fad12cb)
+   autobench        1.0.0    2019-03-31 [1] Github (bjmt/autobench@2596beb)
    bench            1.0.1    2018-06-06 [1] CRAN (R 3.5.0)                 
    cli              1.1.0    2019-03-19 [1] CRAN (R 3.5.2)                 
    codetools        0.2-16   2018-12-24 [2] CRAN (R 3.5.3)                 
