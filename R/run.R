@@ -21,11 +21,12 @@ run <- function(name = NULL, ...) {
   ## load autobench::begin() settings
   missing.settings <- paste0("Could not find benchmark settings, make sure to",
                              " call autobench::begin() first")
-  run.settings <- tryCatch(get(".autobench_info", envir = baseenv()),
-                           error = function(e) stop(missing.settings))
+  run.settings <- .autobench_env$begin
   if (run.settings$invalid) stop(missing.settings)
+
   run.settings$counter <- run.settings$counter + 1
-  assign(".autobench_info", run.settings, envir = baseenv())
+  .autobench_env$begin$counter <- run.settings$counter
+
   v <- !run.settings$quiet
   out.format <- run.settings$format
 
@@ -36,10 +37,9 @@ run <- function(name = NULL, ...) {
   }
 
   ## check for autobench::skip()
-  skip <- tryCatch(get(".autobench_skip", envir = baseenv()),
-                   error = function(e) stop(missing.settings))
-  if (skip$skip) {
-    assign(".autobench_skip", list(skip = FALSE), envir = baseenv())
+  skip <- .autobench_env$skip
+  if (skip) {
+    .autobench_env$skip <- c(skip = FALSE)
     skip.msg <- paste0(ifelse(out.format == "md", "## Benchmark ", ">>> Benchmark "),
                        run.settings$counter, ":",
                        ifelse(is.null(name), "", paste0(" ", name)), " [SKIPPED]")
@@ -49,8 +49,7 @@ run <- function(name = NULL, ...) {
   }
 
   ## check for autobench::update() settings
-  updated.settings <- tryCatch(get(".autobench_updated", envir = baseenv()),
-                               error = function(e) stop(missing.settings))
+  updated.settings <- .autobench_env$update
   updated.note <- list(permanent = updated.settings$permanent)
   if (!is.null(updated.settings$max.reps)) {
     updated.note <- c(updated.note, list(max.reps = updated.settings$max.reps))
@@ -183,7 +182,7 @@ run <- function(name = NULL, ...) {
     updated.settings <- list(quiet = NULL, max.reps = NULL, min.time = NULL,
                              check = NULL,
                              unit = NULL, stop.on.fail = NULL, permanent = FALSE)
-    assign(".autobench_updated", updated.settings, envir = baseenv())
+    .autobench_env$update <- updated.settings
   }
 
   ## exit

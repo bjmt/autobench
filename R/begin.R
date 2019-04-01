@@ -51,21 +51,17 @@ begin <- function(file = stdout(), name = NULL,
   tool <- match.arg(tool, c("bench", "microbenchmark", "rbenchmark"))
   format <- match.arg(format, c("txt", "md"))
 
-  autobench.settings <- list(file = file, quiet = quiet, counter = 0,
-                             max.reps = max.reps, unit = unit, format = format,
-                             check = check, tool = tool, min.reps = min.reps,
-                             stop.on.fail = stop.on.fail, min.time = min.time,
-                             session.info = session.info, invalid = FALSE)
+  .autobench_env$begin <- list(file = file, quiet = quiet, counter = 0,
+                               max.reps = max.reps, unit = unit, format = format,
+                               check = check, tool = tool, min.reps = min.reps,
+                               stop.on.fail = stop.on.fail, min.time = min.time,
+                               session.info = session.info, invalid = FALSE)
 
-  assign(".autobench_info", autobench.settings, envir = baseenv())
+  .autobench_env$update <- list(max.reps = NULL, min.time = NULL,
+                                unit = NULL, stop.on.fail = NULL, check = NULL,
+                                min.reps = NULL, permanent = TRUE)
 
-  updated.settings <- list(max.reps = NULL, min.time = NULL,
-                           unit = NULL, stop.on.fail = NULL, check = NULL,
-                           min.reps = NULL, permanent = TRUE)
-
-  assign(".autobench_updated", updated.settings, envir = baseenv())
-
-  assign(".autobench_skip", list(skip = FALSE), envir = baseenv())
+  .autobench_env$skip <- c(skip = FALSE)
 
   out <- c(paste0("autobench v", packageDescription("autobench")$Version),
            as.character(Sys.time()), "",

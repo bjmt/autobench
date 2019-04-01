@@ -16,18 +16,18 @@ update <- function(max.reps = NULL, min.time = NULL, unit = NULL,
                    check = NULL, min.reps = NULL,
                    tool = NULL, stop.on.fail = NULL, permanent = FALSE) {
 
+  # NOTE: When permanent = TRUE, should updated settings be moved to
+  #       run.settings?
+
   if (!is.null(tool))
     tool <- match.arg(tool, c("bench", "microbenchmark", "rbenchmark"))
 
   missing.settings <- paste0("Could not find benchmark settings, make sure to",
                              " call autobench::begin() first")
 
-  run.settings <- tryCatch(get(".autobench_info", envir = baseenv()),
-                           error = function(e) stop(missing.settings))
-  if (run.settings$invalid) stop(missing.settings)
+  if (.autobench_env$begin$invalid) stop(missing.settings)
 
-  updated.settings <- tryCatch(get(".autobench_updated", envir = baseenv()),
-                               error = function(e) stop(missing.settings))
+  updated.settings <- .autobench_env$update
 
   if (!is.null(max.reps)) updated.settings$max.reps <- max.reps
   if (!is.null(min.reps)) updated.settings$min.reps <- min.reps
@@ -39,7 +39,7 @@ update <- function(max.reps = NULL, min.time = NULL, unit = NULL,
 
   updated.settings$permanent <- permanent
 
-  assign(".autobench_updated", updated.settings, envir = baseenv())
+  .autobench_env$update <- updated.settings
 
   invisible(NULL)
 

@@ -11,7 +11,13 @@
 #' @export
 end <- function() {
 
+  missing.settings <- paste0("Could not find benchmark settings, make sure to",
+                             " call autobench::begin()")
+  run.settings <- .autobench_env$begin
+  if (run.settings$invalid) stop(missing.settings)
+
   total.toc <- toc(quiet = TRUE)
+  if (is.null(total.toc)) stop("Could not find `toc` counter")
   cat.toc <- total.toc$toc - total.toc$tic
   if (cat.toc > 3600) {
     cat.toc <- round(cat.toc / 3600, 1)
@@ -24,11 +30,6 @@ end <- function() {
   }
   total.toc <- paste("Total runtime:", cat.toc)
 
-  missing.settings <- paste0("Could not find benchmark settings, make sure to",
-                             " call autobench::begin()")
-  run.settings <- tryCatch(get(".autobench_info", envir = baseenv()),
-                           error = function(e) stop(missing.settings))
-  if (run.settings$invalid) stop(missing.settings)
   v <- !run.settings$quiet
   out.format <- run.settings$format
   if (v) {
@@ -36,7 +37,7 @@ end <- function() {
   }
 
   run.settings$invalid <- TRUE
-  assign(".autobench_info", run.settings, envir = baseenv())
+  .autobench_env$begin <- run.settings
 
   if (run.settings$session.info) {
     old.width <- getOption("width")
