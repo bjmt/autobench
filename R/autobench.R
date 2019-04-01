@@ -15,15 +15,10 @@ NULL
 
 .onLoad <- function(libname, pkgname) {
 
-  .autobench_env$begin <- list(file = NULL, quiet = NULL, counter = NULL,
-                               max.reps = NULL, min.time = NULL, check = NULL,
-                               unit = NULL, stop.on.fail = NULL, format = NULL,
-                               session.info = NULL, invalid = TRUE)
+  .autobench_env$begin <- list(invalid = TRUE)
 
-  .autobench_env$update <- list(max.reps = NULL, min.time = NULL, unit = NULL,
-                                check = NULL, min.reps = NULL, tool = NULL,
-                                stop.on.fail = NULL, permanent = FALSE)
+  .autobench_env$update <- list()
 
-  .autobench_env$skip <- c(skip = FALSE)
+  .autobench_env$skip <- logical()
 
 }
