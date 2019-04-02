@@ -1,3 +1,7 @@
+# autobench 1.1.0
+
+* New `note()` function: insert user notes in results during an `autobench` run
+
 # autobench 1.0.0
 
 * Improved markdown output
