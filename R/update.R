@@ -1,10 +1,10 @@
-#' Change autobench settings during a run.
+#' Change autobenchR settings during a run.
 #'
-#' Changes the benchmark settings partway through an \pkg{autobench} session.
+#' Changes the benchmark settings partway through an \pkg{autobenchR} session.
 #'
 #' @param permanent Whether to only change the settings of the next immediate
 #'    set of benchmarks, or all following benchmarks. Note that only one set
-#'    of updated settings are stored, so calling [autobench::update()] again
+#'    of updated settings are stored, so calling [autobenchR::update()] again
 #'    will overwrite these.
 #'
 #' @return `NULL`, invisibly.
@@ -23,11 +23,11 @@ update <- function(max.reps = NULL, min.time = NULL, unit = NULL,
     tool <- match.arg(tool, c("bench", "microbenchmark", "rbenchmark"))
 
   missing.settings <- paste0("Could not find benchmark settings, make sure to",
-                             " call autobench::begin() first")
+                             " call autobenchR::begin() first")
 
-  if (.autobench_env$begin$invalid) stop(missing.settings)
+  if (.autobenchR_env$begin$invalid) stop(missing.settings)
 
-  updated.settings <- .autobench_env$update
+  updated.settings <- .autobenchR_env$update
 
   if (!is.null(max.reps)) updated.settings$max.reps <- max.reps
   if (!is.null(min.reps)) updated.settings$min.reps <- min.reps
@@ -39,7 +39,7 @@ update <- function(max.reps = NULL, min.time = NULL, unit = NULL,
 
   updated.settings$permanent <- permanent
 
-  .autobench_env$update <- updated.settings
+  .autobenchR_env$update <- updated.settings
 
   invisible(NULL)
 

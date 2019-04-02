@@ -16,7 +16,7 @@ run(name = NULL, ...)
 run instance was successful, and \code{NULL} if skipped.
 }
 \description{
-Must be run after \code{\link[autobench:begin]{autobench::begin()}}, and before \code{\link[autobench:end]{autobench::end()}}.
+Must be run after \code{\link[autobenchR:begin]{autobenchR::begin()}}, and before \code{\link[autobenchR:end]{autobenchR::end()}}.
 }
 \section{Note}{
 

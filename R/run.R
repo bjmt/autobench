@@ -1,6 +1,6 @@
 #' Run a set of benchmarks.
 #'
-#' Must be run after [autobench::begin()], and before [autobench::end()].
+#' Must be run after [autobenchR::begin()], and before [autobenchR::end()].
 #'
 #' @param name Name representing this set of benchmarks.
 #' @param ... Named expressions to benchmark.
@@ -18,14 +18,14 @@ run <- function(name = NULL, ...) {
 
   exprs <- get_exprs(...)
 
-  ## load autobench::begin() settings
+  ## load autobenchR::begin() settings
   missing.settings <- paste0("Could not find benchmark settings, make sure to",
-                             " call autobench::begin() first")
-  run.settings <- .autobench_env$begin
+                             " call autobenchR::begin() first")
+  run.settings <- .autobenchR_env$begin
   if (run.settings$invalid) stop(missing.settings)
 
   run.settings$counter <- run.settings$counter + 1
-  .autobench_env$begin$counter <- run.settings$counter
+  .autobenchR_env$begin$counter <- run.settings$counter
 
   v <- !run.settings$quiet
   out.format <- run.settings$format
@@ -36,10 +36,10 @@ run <- function(name = NULL, ...) {
     cat(v.r)
   }
 
-  ## check for autobench::skip()
-  skip <- .autobench_env$skip
+  ## check for autobenchR::skip()
+  skip <- .autobenchR_env$skip
   if (skip) {
-    .autobench_env$skip <- c(skip = FALSE)
+    .autobenchR_env$skip <- c(skip = FALSE)
     skip.msg <- paste0(ifelse(out.format == "md", "## Benchmark ", ">>> Benchmark "),
                        run.settings$counter, ":",
                        ifelse(is.null(name), "", paste0(" ", name)), " [SKIPPED]")
@@ -48,8 +48,8 @@ run <- function(name = NULL, ...) {
     return(invisible(NULL))
   }
 
-  ## check for autobench::update() settings
-  updated.settings <- .autobench_env$update
+  ## check for autobenchR::update() settings
+  updated.settings <- .autobenchR_env$update
   updated.note <- list(permanent = updated.settings$permanent)
   if (!is.null(updated.settings$max.reps)) {
     updated.note <- c(updated.note, list(max.reps = updated.settings$max.reps))
@@ -95,12 +95,12 @@ run <- function(name = NULL, ...) {
                   "bench" = {
                     b <- run_bench(exprs, run.settings$max.reps, run.settings$min.time,
                                    run.settings$check, run.settings$min.reps)
-                    if (is(b, "autobench_error")) b else list(b = b)
+                    if (is(b, "autobenchR_error")) b else list(b = b)
                   },
                   "microbenchmark" = {
                     b <- run_microbenchmark(exprs, run.settings$max.reps,
                                             run.settings$check)
-                    if (is(b, "autobench_error")) {
+                    if (is(b, "autobenchR_error")) {
                       b
                     } else {
                       m <- numeric(length(exprs))
@@ -111,7 +111,7 @@ run <- function(name = NULL, ...) {
                   },
                   "rbenchmark" = {
                     b <- run_rbenchmark(exprs, run.settings$max.reps)
-                    if (is(b, "autobench_error")) {
+                    if (is(b, "autobenchR_error")) {
                       b
                     } else {
                       m <- numeric(length(exprs))
@@ -125,7 +125,7 @@ run <- function(name = NULL, ...) {
   bench.toc <- toc(quiet = TRUE)
 
   ## deal with benchmark output
-  if (is(res, "autobench_error")) {
+  if (is(res, "autobenchR_error")) {
     fail.msg <- c(paste0(ifelse(out.format == "md", "## Benchmark ", ">>> Benchmark "),
                          run.settings$counter, ":",
                          ifelse(is.null(name), "", paste0(" ", name)), " [ERROR]"),
@@ -182,7 +182,7 @@ run <- function(name = NULL, ...) {
     updated.settings <- list(quiet = NULL, max.reps = NULL, min.time = NULL,
                              check = NULL,
                              unit = NULL, stop.on.fail = NULL, permanent = FALSE)
-    .autobench_env$update <- updated.settings
+    .autobenchR_env$update <- updated.settings
   }
 
   ## exit
@@ -203,7 +203,7 @@ run_bench <- function(exprs, max_iterations, min_time, check, min_iterations) {
                                           min_time = min_time,
                                           min_iterations = min_iterations)))),
                error = function(e) structure(conditionMessage(e),
-                                           class = "autobench_error"))
+                                           class = "autobenchR_error"))
          )
     a
   } else
@@ -217,7 +217,7 @@ run_microbenchmark <- function(exprs, times, check) {
       a <- tryCatch(suppressMessages(suppressWarnings(do.call(microbenchmark::microbenchmark,
                        c(as.list(exprs), list(times = times), list(check = check))))),
                error = function(e) structure(conditionMessage(e),
-                                           class = "autobench_error"))
+                                           class = "autobenchR_error"))
          )
     a
   } else
@@ -229,7 +229,7 @@ run_rbenchmark <- function(exprs, replications) {
     a <- tryCatch(suppressMessages(suppressWarnings(do.call(rbenchmark::benchmark,
                      c(exprs, replications = replications)))),
              error = function(e) structure(conditionMessage(e),
-                                           class = "autobench_error"))
+                                           class = "autobenchR_error"))
        )
   a
 }

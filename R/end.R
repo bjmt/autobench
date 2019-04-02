@@ -1,8 +1,8 @@
-#' Terminate an autobench run.
+#' Terminate an autobenchR run.
 #'
-#' Calling [autobench::end()] will terminate an \pkg{autobench} session by
+#' Calling [autobenchR::end()] will terminate an \pkg{autobenchR} session by
 #' printing total runtime and session info (if `session.info = TRUE`). Note that
-#' [autobench::begin()] must be called again in order to execute further
+#' [autobenchR::begin()] must be called again in order to execute further
 #' benchmarks.
 #'
 #' @return `TRUE`, invisibly.
@@ -12,8 +12,8 @@
 end <- function() {
 
   missing.settings <- paste0("Could not find benchmark settings, make sure to",
-                             " call autobench::begin()")
-  run.settings <- .autobench_env$begin
+                             " call autobenchR::begin()")
+  run.settings <- .autobenchR_env$begin
   if (run.settings$invalid) stop(missing.settings)
 
   total.toc <- toc(quiet = TRUE)
@@ -37,7 +37,7 @@ end <- function() {
   }
 
   run.settings$invalid <- TRUE
-  .autobench_env$begin <- run.settings
+  .autobenchR_env$begin <- run.settings
 
   if (run.settings$session.info) {
     old.width <- getOption("width")

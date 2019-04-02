@@ -1,4 +1,4 @@
-Package: autobench
+Package: autobenchR
 Title: Automated code benchmarking
 Version: 1.1.1
 Authors@R:
@@ -12,8 +12,8 @@ Description: Easily write and run large sets of benchmarks all at once, and
   the following packages: bench, microbenchmark, and rbenchmark.
 License: MIT + file LICENSE
 Encoding: UTF-8
-URL: https://github.com/bjmt/autobench
-BugReports: https://github.com/bjmt/autobench/issues
+URL: https://github.com/bjmt/autobenchR
+BugReports: https://github.com/bjmt/autobenchR/issues
 Imports: knitr, tictoc, sessioninfo, rbenchmark, profmem, utils, methods
 Suggests: bench, microbenchmark
 RoxygenNote: 6.1.1

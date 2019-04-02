@@ -2,7 +2,7 @@
 % Please edit documentation in R/update.R
 \name{update}
 \alias{update}
-\title{Change autobench settings during a run.}
+\title{Change autobenchR settings during a run.}
 \usage{
 update(max.reps = NULL, min.time = NULL, unit = NULL, check = NULL,
   min.reps = NULL, tool = NULL, stop.on.fail = NULL,
@@ -31,7 +31,7 @@ valid if \code{tool = "bench"} or \code{tool = "microbenchmark"}.}
 \item{min.reps}{Only applies if \code{tool = "bench"}. Minimum number of times to
 run each expression.}
 
-\item{tool}{Benchmarking package used by autobench. One of "bench",
+\item{tool}{Benchmarking package used by autobenchR. One of "bench",
 "microbenchmark", and "rbenchmark".}
 
 \item{stop.on.fail}{Whether to give an error if one of the expressions gives
@@ -39,14 +39,14 @@ an error, or continue.}
 
 \item{permanent}{Whether to only change the settings of the next immediate
 set of benchmarks, or all following benchmarks. Note that only one set
-of updated settings are stored, so calling \code{\link[autobench:update]{autobench::update()}} again
+of updated settings are stored, so calling \code{\link[autobenchR:update]{autobenchR::update()}} again
 will overwrite these.}
 }
 \value{
 \code{NULL}, invisibly.
 }
 \description{
-Changes the benchmark settings partway through an \pkg{autobench} session.
+Changes the benchmark settings partway through an \pkg{autobenchR} session.
 }
 \author{
 Benjamin Jean-Marie Tremblay

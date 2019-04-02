@@ -1,15 +1,15 @@
-#' Initialise an autobench run.
+#' Initialise an autobenchR run.
 #'
-#' Generates the settings used by instances of [autobench::run()]. This
-#' function must be called before any other, and again after [autobench::end()]
+#' Generates the settings used by instances of [autobenchR::run()]. This
+#' function must be called before any other, and again after [autobenchR::end()]
 #' is called in order to run further benchmarks.
 #'
 #' @param file Print results to this file. The default (`file = stdout()`)
 #'    prints results to the terminal.
-#' @param name Name of \pkg{autobench} session.
+#' @param name Name of \pkg{autobenchR} session.
 #' @param quiet Suppress run status. By default, is set to `TRUE` if `file` is a
 #'    terminal connection and `FALSE` otherwise.
-#' @param tool Benchmarking package used by autobench. One of "bench",
+#' @param tool Benchmarking package used by autobenchR. One of "bench",
 #'    "microbenchmark", and "rbenchmark".
 #' @param min.reps Only applies if `tool = "bench"`. Minimum number of times to
 #'    run each expression.
@@ -32,7 +32,7 @@
 #'    an error, or continue.
 #' @param format Format of output results. One of "txt" (text) and "md" (markdown).
 #'    Defaults to "txt" if `file` is a terminal connection.
-#' @param session.info Print session info after [autobench::end()] is
+#' @param session.info Print session info after [autobenchR::end()] is
 #'    called. By default will only be set to `TRUE` if `file` is not a
 #'    terminal connection.
 #'
@@ -51,19 +51,19 @@ begin <- function(file = stdout(), name = NULL,
   tool <- match.arg(tool, c("bench", "microbenchmark", "rbenchmark"))
   format <- match.arg(format, c("txt", "md"))
 
-  .autobench_env$begin <- list(file = file, quiet = quiet, counter = 0,
+  .autobenchR_env$begin <- list(file = file, quiet = quiet, counter = 0,
                                max.reps = max.reps, unit = unit, format = format,
                                check = check, tool = tool, min.reps = min.reps,
                                stop.on.fail = stop.on.fail, min.time = min.time,
                                session.info = session.info, invalid = FALSE)
 
-  .autobench_env$update <- list(max.reps = NULL, min.time = NULL,
+  .autobenchR_env$update <- list(max.reps = NULL, min.time = NULL,
                                 unit = NULL, stop.on.fail = NULL, check = NULL,
                                 min.reps = NULL, permanent = TRUE)
 
-  .autobench_env$skip <- c(skip = FALSE)
+  .autobenchR_env$skip <- c(skip = FALSE)
 
-  out <- c(paste0("autobench v", packageDescription("autobench")$Version),
+  out <- c(paste0("autobenchR v", packageDescription("autobenchR")$Version),
            as.character(Sys.time()), "",
            paste0(ifelse(format == "md", "## ", ""), "Initial benchmark settings"),
            paste("  * tool:", tool),

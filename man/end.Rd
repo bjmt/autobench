@@ -2,7 +2,7 @@
 % Please edit documentation in R/end.R
 \name{end}
 \alias{end}
-\title{Terminate an autobench run.}
+\title{Terminate an autobenchR run.}
 \usage{
 end()
 }
@@ -10,9 +10,9 @@ end()
 \code{TRUE}, invisibly.
 }
 \description{
-Calling \code{\link[autobench:end]{autobench::end()}} will terminate an \pkg{autobench} session by
+Calling \code{\link[autobenchR:end]{autobenchR::end()}} will terminate an \pkg{autobenchR} session by
 printing total runtime and session info (if \code{session.info = TRUE}). Note that
-\code{\link[autobench:begin]{autobench::begin()}} must be called again in order to execute further
+\code{\link[autobenchR:begin]{autobenchR::begin()}} must be called again in order to execute further
 benchmarks.
 }
 \author{

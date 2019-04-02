@@ -1,4 +1,4 @@
-#' Insert notes in an autobench run.
+#' Insert notes in an autobenchR run.
 #'
 #' @param ... User notes. The individual elements
 #'    will have two newline characters separating them.
@@ -11,8 +11,8 @@
 note <- function(..., name = "Note") {
 
   missing.settings <- paste0("Could not find benchmark settings, make sure to",
-                             " call autobench::begin()")
-  run.settings <- .autobench_env$begin
+                             " call autobenchR::begin()")
+  run.settings <- .autobenchR_env$begin
   if (run.settings$invalid) stop(missing.settings)
 
   file <- run.settings$file

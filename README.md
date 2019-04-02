@@ -1,7 +1,7 @@
-# autobench
+# autobenchR
 
 Easily write and run large sets of benchmarks all at once, and collect results
-in one output file. The `autobench` package does not provide any benchmarking
+in one output file. The `autobenchR` package does not provide any benchmarking
 functionality by itself, instead allowing for use of one of the following
 packages: [bench](https://cran.r-project.org/web/packages/bench/index.html),
 [microbenchmark](https://cran.r-project.org/web/packages/microbenchmark/index.html),
@@ -11,7 +11,7 @@ and [rbenchmark](https://cran.r-project.org/web/packages/rbenchmark/index.html).
 
 ```r
 if (!requireNamespace("remotes", quietly = TRUE)) install.packages("remotes")
-remotes::install_github("bjmt/autobench")
+remotes::install_github("bjmt/autobenchR")
 ```
 
 ## Usage
@@ -19,32 +19,32 @@ remotes::install_github("bjmt/autobench")
 ### Code
 
 ```r
-autobench::begin("results.txt", tool = "bench")
+autobenchR::begin("results.txt", tool = "bench")
 
-autobench::run("Tests",
-               e1 = runif(100000, 0, 10),
-               e2 = rnorm(100000, 5, 2.5))
+autobenchR::run("Tests",
+                e1 = runif(100000, 0, 10),
+                e2 = rnorm(100000, 5, 2.5))
 
-autobench::update(tool = "microbenchmark")
-autobench::run("Different tool",
-               e1 = runif(100000, 0, 10),
-               e2 = rnorm(100000, 5, 2.5))
+autobenchR::update(tool = "microbenchmark")
+autobenchR::run("Different tool",
+                e1 = runif(100000, 0, 10),
+                e2 = rnorm(100000, 5, 2.5))
 
-autobench::update(tool = "rbenchmark", unit = "ms")
-autobench::run("Different tool 2",
-               e1 = runif(100000, 0, 10),
-               e2 = rnorm(100000, 5, 2.5))
+autobenchR::update(tool = "rbenchmark", unit = "ms")
+autobenchR::run("Different tool 2",
+                e1 = runif(100000, 0, 10),
+                e2 = rnorm(100000, 5, 2.5))
 
-autobench::skip()
-autobench::run("Skipped tests",
-               e1 = sample(1:1000, 1000))
+autobenchR::skip()
+autobenchR::run("Skipped tests",
+                e1 = sample(1:1000, 1000))
 
-autobench::note("* Bullet point 1", "* Bullet point 2", name = "Some notes")
+autobenchR::note("* Bullet point 1", "* Bullet point 2", name = "Some notes")
 
-autobench::run("Failing test",
-               e1 = 1 + "a")
+autobenchR::run("Failing test",
+                e1 = 1 + "a")
 
-autobench::end()
+autobenchR::end()
 ```
 
 ### Terminal output

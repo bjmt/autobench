@@ -2,7 +2,7 @@
 % Please edit documentation in R/note.R
 \name{note}
 \alias{note}
-\title{Insert notes in an autobench run.}
+\title{Insert notes in an autobenchR run.}
 \usage{
 note(..., name = "Note")
 }
@@ -16,7 +16,7 @@ will have two newline characters separating them.}
 \code{NULL}, insivibly.
 }
 \description{
-Insert notes in an autobench run.
+Insert notes in an autobenchR run.
 }
 \author{
 Benjamin Jean-Marie Tremblay

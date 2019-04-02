@@ -2,7 +2,7 @@
 % Please edit documentation in R/begin.R
 \name{begin}
 \alias{begin}
-\title{Initialise an autobench run.}
+\title{Initialise an autobenchR run.}
 \usage{
 begin(file = stdout(), name = NULL, quiet = ifelse(isatty(file),
   TRUE, FALSE), tool = "rbenchmark", min.reps = 1, max.reps = 100,
@@ -14,12 +14,12 @@ begin(file = stdout(), name = NULL, quiet = ifelse(isatty(file),
 \item{file}{Print results to this file. The default (\code{file = stdout()})
 prints results to the terminal.}
 
-\item{name}{Name of \pkg{autobench} session.}
+\item{name}{Name of \pkg{autobenchR} session.}
 
 \item{quiet}{Suppress run status. By default, is set to \code{TRUE} if \code{file} is a
 terminal connection and \code{FALSE} otherwise.}
 
-\item{tool}{Benchmarking package used by autobench. One of "bench",
+\item{tool}{Benchmarking package used by autobenchR. One of "bench",
 "microbenchmark", and "rbenchmark".}
 
 \item{min.reps}{Only applies if \code{tool = "bench"}. Minimum number of times to
@@ -50,7 +50,7 @@ an error, or continue.}
 \item{format}{Format of output results. One of "txt" (text) and "md" (markdown).
 Defaults to "txt" if \code{file} is a terminal connection.}
 
-\item{session.info}{Print session info after \code{\link[autobench:end]{autobench::end()}} is
+\item{session.info}{Print session info after \code{\link[autobenchR:end]{autobenchR::end()}} is
 called. By default will only be set to \code{TRUE} if \code{file} is not a
 terminal connection.}
 }
@@ -58,8 +58,8 @@ terminal connection.}
 \code{NULL}, invisibly.
 }
 \description{
-Generates the settings used by instances of \code{\link[autobench:run]{autobench::run()}}. This
-function must be called before any other, and again after \code{\link[autobench:end]{autobench::end()}}
+Generates the settings used by instances of \code{\link[autobenchR:run]{autobenchR::run()}}. This
+function must be called before any other, and again after \code{\link[autobenchR:end]{autobenchR::end()}}
 is called in order to run further benchmarks.
 }
 \author{
