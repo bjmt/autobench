@@ -1,13 +1,13 @@
 Package: autobenchR
 Title: Automated code benchmarking
-Version: 1.1.1
+Version: 1.1.2
 Authors@R:
     person(given = c("Benjamin", "Jean-Marie"),
            family = "Tremblay",
            role = c("aut", "cre"),
            email = "benjmtremblay@gmail.com")
 Description: Easily write and run large sets of benchmarks all at once, and
-  collect results in one output file. The autobench package does not provide
+  collect results in one output file. The autobenchR package does not provide
   any benchmarking functionality by itself, instead allowing for use of one of
   the following packages: bench, microbenchmark, and rbenchmark.
 License: MIT + file LICENSE
