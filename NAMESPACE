@@ -2,6 +2,7 @@
 
 export(begin)
 export(end)
+export(note)
 export(run)
 export(skip)
 export(update)

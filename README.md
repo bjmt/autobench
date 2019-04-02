@@ -39,6 +39,8 @@ autobench::skip()
 autobench::run("Skipped tests",
                e1 = sample(1:1000, 1000))
 
+autobench::note("* Bullet point 1", "* Bullet point 2", name = "Some notes")
+
 autobench::run("Failing test",
                e1 = 1 + "a")
 
