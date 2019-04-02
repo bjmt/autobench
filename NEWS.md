@@ -1,3 +1,7 @@
+# autobench 1.1.1
+
+* Forgot to export `note()`
+
 # autobench 1.1.0
 
 * New `note()` function: insert user notes in results during an `autobench` run
