@@ -1,3 +1,8 @@
+# autobenchR 1.1.3
+
+* Use `pryr::mem_change()` if memory profiling is not enabled
+* Update output of `bench` runs to match `bench` update (no mean and max columns)
+
 # autobenchR 1.1.2
 
 * Renamed package autobench --> autobenchR

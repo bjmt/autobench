@@ -85,6 +85,14 @@ begin <- function(file = stdout(), name = NULL,
     out[2] <- paste0("\n", out[2])
   }
 
+  if (!capabilities("profmem")) {
+    warning("R has not been compiled with memory profiling enabled, using pryr::mem_change()",
+            immediate. = TRUE)
+    if (!requireNamespace("pryr", quietly = TRUE))
+      stop("The pryr package is not installed")
+    out <- c(out, "  * NOTE: using pryr::mem_change() instead of utils::Rprofmem()")
+  }
+
   cat(out, sep = "\n", file = file)
 
   if (!quiet) cat("Starting benchmarks")

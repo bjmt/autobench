@@ -236,21 +236,34 @@ run_rbenchmark <- function(exprs, replications) {
 
 get_mem_allocs <- function(e, env = parent.frame()) {
 
-  f <- tempfile()
-  on.exit(unlink(f))
+  if (!capabilities("profmem")) {
 
-  Rprofmem(f, threshold = 1)
-  a <- capture.output(res <- suppressMessages(suppressWarnings(eval(e, env))))
-  Rprofmem(NULL)
+    if (requireNamespace("pryr", quietly = TRUE)) {
+      a <- capture.output(res <- suppressMessages(suppressWarnings(pryr::mem_change(e))))
+      memory <- as.numeric(res)
+    } else {
+      stop("The pryr package is not installed")
+    }
 
-  if (!file.exists(f)) return(0)
+  } else {
 
-  memory <- readRprofmem(f)
+    f <- tempfile()
+    on.exit(unlink(f))
 
-  memory <- sum(memory$bytes, na.rm = TRUE)
+    Rprofmem(f, threshold = 1)
+    a <- capture.output(res <- suppressMessages(suppressWarnings(eval(e, env))))
+    Rprofmem(NULL)
 
-  if (length(memory) > 1) stop("something went wrong with getting memory allocations for: ",
-                               as.character(e))
+    if (!file.exists(f)) return(0)
+
+    memory <- readRprofmem(f)
+
+    memory <- sum(memory$bytes, na.rm = TRUE)
+
+    if (length(memory) > 1) stop("something went wrong with getting memory allocations for: ",
+                                 as.character(e))
+
+  }
 
   memory
 
@@ -258,14 +271,12 @@ get_mem_allocs <- function(e, env = parent.frame()) {
 
 parse_bench <- function(res, out.format) {
 
-  bench <- res$b[, seq_len(10)]
+  bench <- res$b[, 1:9]
 
   bench.rel <- bench
   min.i <- which.min(bench$median)
   bench.rel$min <- as.numeric(bench$min) / as.numeric(bench$min[min.i])
-  bench.rel$mean <- as.numeric(bench$mean) / as.numeric(bench$mean[min.i])
   bench.rel$median <- as.numeric(bench$median) / as.numeric(bench$median[min.i])
-  bench.rel$max <- as.numeric(bench$max) / as.numeric(bench$max[min.i])
   bench.rel$mem_alloc <- as.numeric(bench$mem_alloc) / as.numeric(bench$mem_alloc[min.i])
   bench.rel$total_time <- as.numeric(bench$total_time) / as.numeric(bench$total_time[min.i])
 
@@ -278,11 +289,10 @@ parse_bench <- function(res, out.format) {
     table.format <- "pandoc"
   }
 
-  # bench <- bench[, -6]
   bench <- kable(bench, table.format, padding = 0)
   bench <- as.character(bench)
 
-  bench.rel <- bench.rel[, c(seq_len(5), 7, 10)]
+  bench.rel <- bench.rel[, c(1:3, 5, 9)]
   bench.rel <- kable(bench.rel, table.format, padding = 0)
   bench.rel <- as.character(bench.rel)
 
